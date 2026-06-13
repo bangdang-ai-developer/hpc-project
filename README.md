@@ -114,6 +114,7 @@ Neu `make preflight` fail, nghia la chua du evidence benchmark/report de nop.
 ## Tai lieu can doc
 
 - `START_HERE.md`: luong thao tac ngan nhat.
+- `docs/INSTALL_FOR_TEAMMATES.md`: huong dan clone va cai moi truong cho thanh vien con lai.
 - `docs/CODE_WALKTHROUGH.md`: giai thich code khi demo.
 - `docs/DEMO_CHEAT_SHEET.md`: cach demo truoc thay.
 - `docs/THREE_PHYSICAL_MACHINES_SETUP.md`: setup 3 may Linux.

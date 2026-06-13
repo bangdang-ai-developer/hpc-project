@@ -4,6 +4,12 @@ Doc file nay dau tien khi mo project.
 
 ## 1. Cai dat moi truong
 
+Neu la thanh vien moi clone project ve lan dau, doc:
+
+```text
+docs/INSTALL_FOR_TEAMMATES.md
+```
+
 Tren Ubuntu/WSL:
 
 ```bash

@@ -55,6 +55,7 @@ done
 # Minimal docs
 copy_if_exists docs/CODE_WALKTHROUGH.md docs/CODE_WALKTHROUGH.md
 copy_if_exists docs/DEMO_CHEAT_SHEET.md docs/DEMO_CHEAT_SHEET.md
+copy_if_exists docs/INSTALL_FOR_TEAMMATES.md docs/INSTALL_FOR_TEAMMATES.md
 copy_if_exists docs/THREE_PHYSICAL_MACHINES_SETUP.md docs/THREE_PHYSICAL_MACHINES_SETUP.md
 copy_if_exists docs/SUBMISSION_CHECKLIST.md docs/SUBMISSION_CHECKLIST.md
 copy_if_exists docs/BaoCao_DeTai1_NhanMaTran_MPI.docx docs/BaoCao_DeTai1_NhanMaTran_MPI.docx
