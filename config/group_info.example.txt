@@ -1,0 +1,6 @@
+# Copy file nay thanh config/group_info.txt roi dien thong tin nhom.
+# Moi dong se duoc chen vao dong "Nhom thuc hien" trong bao cao Word.
+
+Nguyen Van A - MSSV: 000000 - Vai tro: code, benchmark
+Tran Thi B - MSSV: 000000 - Vai tro: bao cao
+Le Van C - MSSV: 000000 - Vai tro: slides, phan tich ket qua
