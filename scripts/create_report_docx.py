@@ -134,9 +134,9 @@ def build_doc():
     ])
 
     h(doc, "3. Cai dat chuong trinh")
-    p(doc, "De giu code de doc va de demo, toan bo logic chinh nam trong mot file C: src/matrix_hpc.c. Makefile build bang mpicc voi -O3.")
+    p(doc, "De giu code de doc va de demo, phan thuat toan nam trong src/matrix_hpc.c, phan CLI/benchmark/evidence nam trong src/benchmark.c. Makefile build bang mpicc voi -O3.")
     table(doc, ["Hang muc", "Trang thai"], [
-        ["Ma nguon", "src/matrix_hpc.c"],
+        ["Ma nguon", "src/matrix_hpc.c, src/benchmark.c, src/matrix_hpc.h"],
         ["Build", "make tao build/matrix_hpc"],
         ["Demo", "scripts/demo.sh hoi so process truoc roi chay mpirun"],
         ["Benchmark 1 may", "scripts/run_benchmark.sh"],
@@ -147,8 +147,8 @@ def build_doc():
         ["scripts/run_local_pipeline.sh", "Chay benchmark local, tao chart, kiem checksum, tao Word report."],
         ["scripts/run_multinode.sh", "Chay benchmark 1/2/3 node khi co 3 may that."],
         ["scripts/check_local_env.sh", "Kiem tra GCC, OpenMPI, Python va python-docx."],
-        ["docs/BENCHMARK_CHECKLIST.md", "Checklist thao tac truoc khi nop."],
-        ["docs/REQUIREMENTS_COVERAGE.md", "Doi chieu yeu cau de bai voi artifact."],
+        ["docs/INSTALL_FOR_TEAMMATES.md", "Huong dan clone, cai moi truong va chuan bi 3 may."],
+        ["docs/SUBMISSION_CHECKLIST.md", "Checklist artifact truoc khi nop."],
     ])
 
     h(doc, "4. Ket qua thuc nghiem va danh gia hieu nang")

@@ -1,6 +1,14 @@
 # Code walkthrough
 
-Tai lieu nay dung de giai thich nhanh file `src/matrix_hpc.c` khi demo/bao ve.
+Tai lieu nay dung de giai thich nhanh code C khi demo/bao ve.
+
+File can xem:
+
+```text
+src/matrix_hpc.c   thuat toan chinh
+src/benchmark.c    CLI, do thoi gian, checksum, ghi evidence
+src/matrix_hpc.h   khai bao dung chung
+```
 
 ## 1. Muc tieu cua chuong trinh
 
@@ -47,9 +55,20 @@ main()
   detect node count
   in RUN CONFIG
   neu variant seq/seq_tiled -> run_seq()
-  neu variant mpi/mpi_tiled -> run_mpi_row()
+  neu variant mpi/mpi_tiled -> run_mpi()
   MPI_Finalize
 ```
+
+Khi bao ve, chi can tap trung vao 4 ham chinh trong code:
+
+```text
+multiply_basic()   cong thuc nhan ma tran tuan tu
+multiply_tiled()   toi uu cache bang tile
+run_seq()          chay baseline tuan tu
+run_mpi()          song song hoa bang Scatterv, Bcast, Gatherv
+```
+
+Nhung ham con lai chu yeu phuc vu input, checksum va ghi evidence.
 
 ## 4. Input dong va validate
 
@@ -83,18 +102,6 @@ Ly do dung seed:
 
 ```text
 Cung N + cung seed -> cung input -> co the so sanh checksum giua cac variant
-```
-
-Chu co the doc dataset binary bang:
-
-```text
---input-prefix
-```
-
-hoac sinh dataset bang:
-
-```text
---write-input-prefix
 ```
 
 ## 6. Thuat toan tuan tu
@@ -147,7 +154,6 @@ Moi run in:
 
 ```text
 Execution time
-Theoretical FLOP
 GFLOP/s
 Traditional speedup
 Efficiency
@@ -158,6 +164,8 @@ Amdahl max speedup
 Checksum
 Sample file
 ```
+
+Phan RUN CONFIG in them N, so process, so node, RAM uoc luong va FLOP ly thuyet.
 
 Cong thuc:
 
@@ -214,4 +222,48 @@ Neu thay hoi “vi sao dung mpi_tiled?”, tra loi:
 
 ```text
 mpi_tiled van giu y tuong MPI don gian, nhung phan tinh local chia tile de tang cache locality, nen thuong nhanh hon mpi co ban.
+```
+
+## 12. Kich ban demo ngan
+
+Chay demo:
+
+```bash
+make demo
+```
+
+Hoac tren PowerShell Windows:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/windows_run_demo.ps1
+```
+
+Gia tri demo nhanh:
+
+```text
+How many parallel CPU/processes? 2 hoac 4
+Choose algorithm: 4
+N: 128 hoac 256
+Seed: Enter
+Save full result: n
+```
+
+Neu muon demo workload lon hon va co thoi gian:
+
+```text
+N: 1024
+```
+
+Khong nen demo truc tiep voi `N=8192` neu khong chac RAM/thoi gian.
+
+Neu thay hoi `N=4096` lon co nao, tra loi:
+
+```text
+N=4096 nghia la moi ma tran co 4096 x 4096 phan tu. So phep tinh ly thuyet la 2 x 4096^3, xap xi 137.4 ty FLOP.
+```
+
+Neu thay hoi vi sao dung checksum thay vi in ca ma tran, tra loi:
+
+```text
+Ma tran lon co the hang tram MB den nhieu GB, nen in full khong thuc te. Checksum va sample 8x8 giup chung minh correctness gon hon.
 ```

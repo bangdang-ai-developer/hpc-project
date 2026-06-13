@@ -187,7 +187,41 @@ SSH_USER=USER bash scripts/check_cluster.sh
 SSH_USER=USER HOSTFILE=config/hosts N_LIST="512" NODES_LIST="1 2 3" PPN=2 bash scripts/run_multinode.sh
 ```
 
-## D. Luu y
+11. Neu benchmark nho OK, may chinh chay benchmark chinh:
+
+```bash
+SSH_USER=USER HOSTFILE=config/hosts N_LIST="2048 4096" NODES_LIST="1 2 3" PPN=4 REPEAT=5 bash scripts/run_multinode_pipeline.sh
+```
+
+## D. Ghi chu rieng cho may chinh
+
+Tao hostfile:
+
+```bash
+cp config/hosts.example config/hosts
+```
+
+Sua `config/hosts` theo IP that:
+
+```text
+IP_MAY_CHINH slots=4
+IP_WORKER_1 slots=4
+IP_WORKER_2 slots=4
+```
+
+Dong bo code sang worker:
+
+```bash
+SSH_USER=USER bash scripts/sync_to_nodes.sh
+```
+
+Neu muon worker dung duong dan cu the:
+
+```bash
+SSH_USER=USER REMOTE_DIR=/home/USER/hpc-project bash scripts/sync_to_nodes.sh
+```
+
+## E. Luu y
 
 - Khong chay `N=4096` hoac `N=8192` ngay khi moi cai, vi co the mat nhieu thoi gian.
 - Test ban dau chi dung `N=128`, `N=256`, hoac toi da `N=512`.
@@ -203,11 +237,9 @@ bash scripts/check_local_env.sh
 
 ```text
 docs/CODE_WALKTHROUGH.md
-docs/DEMO_CHEAT_SHEET.md
-docs/THREE_PHYSICAL_MACHINES_SETUP.md
 ```
 
-## E. Ket qua mong doi
+## F. Ket qua mong doi
 
 Sau khi cai dung, may cua moi ban phai:
 

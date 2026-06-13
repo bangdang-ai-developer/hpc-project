@@ -3,7 +3,7 @@ CFLAGS ?= -O3 -std=c11 -Wall -Wextra -pedantic -march=native
 LDFLAGS ?= -lm
 
 TARGET := build/matrix_hpc
-SRC := src/matrix_hpc.c
+SRC := src/benchmark.c src/matrix_hpc.c
 
 .PHONY: all clean dirs check demo pipeline multinode-pipeline charts report group-info preflight package
 

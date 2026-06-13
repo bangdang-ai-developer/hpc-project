@@ -84,10 +84,10 @@ make report
 
 ## 5. Benchmark 3 may that
 
-Doc:
+Doc phan 3 may trong:
 
 ```text
-docs/THREE_PHYSICAL_MACHINES_SETUP.md
+docs/INSTALL_FOR_TEAMMATES.md
 ```
 
 Sau khi co IP/SSH cua 3 may Linux:
@@ -116,5 +116,4 @@ make package
 
 ## 7. Khi can giai thich
 
-- `docs/CODE_WALKTHROUGH.md`: giai thich code va luong MPI.
-- `docs/DEMO_CHEAT_SHEET.md`: kich ban demo ngan.
+- `docs/CODE_WALKTHROUGH.md`: giai thich code, luong MPI va kich ban demo ngan.

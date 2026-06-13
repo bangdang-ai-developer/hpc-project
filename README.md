@@ -3,11 +3,14 @@
 Project thuc hien de tai 1: song song hoa phep nhan ma tran kich thuoc lon bang C + MPI/OpenMPI.
 
 Muc tieu cua project la giu code va tai lieu gon: de build, de demo, de benchmark, va de nop bai.
+Code C co chu dich viet theo style bai thuc hanh MPI: tach file thuat toan va file benchmark, it abstraction, de chi ra `Scatterv`, `Bcast`, `Gatherv` khi bao ve.
 
 ## Cau truc chinh
 
 ```text
-src/matrix_hpc.c        Code C chinh
+src/matrix_hpc.c        Thuat toan chinh
+src/benchmark.c         CLI, demo, benchmark, evidence
+src/matrix_hpc.h        Khai bao dung chung
 Makefile                Build va cac lenh tien ich
 scripts/                Script demo, benchmark, report, package
 config/                 Mau hostfile va thong tin nhom
@@ -114,8 +117,6 @@ Neu `make preflight` fail, nghia la chua du evidence benchmark/report de nop.
 ## Tai lieu can doc
 
 - `START_HERE.md`: luong thao tac ngan nhat.
-- `docs/INSTALL_FOR_TEAMMATES.md`: huong dan clone va cai moi truong cho thanh vien con lai.
-- `docs/CODE_WALKTHROUGH.md`: giai thich code khi demo.
-- `docs/DEMO_CHEAT_SHEET.md`: cach demo truoc thay.
-- `docs/THREE_PHYSICAL_MACHINES_SETUP.md`: setup 3 may Linux.
+- `docs/CODE_WALKTHROUGH.md`: giai thich code va cach demo truoc thay.
+- `docs/INSTALL_FOR_TEAMMATES.md`: setup may moi va chuan bi 3 may Linux.
 - `docs/SUBMISSION_CHECKLIST.md`: checklist truoc khi nop.
