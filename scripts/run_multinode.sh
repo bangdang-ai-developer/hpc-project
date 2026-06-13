@@ -67,7 +67,7 @@ run_case() {
   echo "Hosts used for this run:"
   cat "$tmp_hosts"
   echo "Running variant=$variant N=$n nodes=$nodes ppn=$PPN np=$np PE=$PE"
-  mpirun "${MPI_ROOT_FLAGS[@]}" "${MPI_SSH_FLAGS[@]}" --hostfile "$tmp_hosts" -np "$np" --wdir "$REMOTE_DIR" --map-by "ppr:${PPN}:node:PE:${PE}" --bind-to core ./build/matrix_hpc \
+  mpirun "${MPI_ROOT_FLAGS[@]}" "${MPI_SSH_FLAGS[@]}" --hostfile "$tmp_hosts" -np "$np" --wdir "$REMOTE_DIR" --map-by "ppr:${PPN}:node:PE=${PE}" --bind-to core ./build/matrix_hpc \
     --variant "$variant" \
     --n "$n" \
     --seed "$SEED" \
@@ -78,7 +78,7 @@ run_case() {
     --save-sample \
     --checksum-file "$CHECKSUMS" \
     --run-label node_sweep \
-    --mapping "ppr:${PPN}:node:PE:${PE}" \
+    --mapping "ppr:${PPN}:node:PE=${PE}" \
     --pe "$PE" | tee "$tmp"
   grep '^RESULT,' "$tmp" | sed 's/^RESULT,//' >> "$RAW"
   rm -f "$tmp" "$tmp_hosts"

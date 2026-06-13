@@ -1,6 +1,9 @@
 # Build artifacts
 build/
 
+# Machine-specific cluster hostfile
+config/hosts
+
 # Local course materials, not needed in the public code repo
 Slides/
 
