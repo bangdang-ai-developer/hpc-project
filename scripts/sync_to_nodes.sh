@@ -6,6 +6,7 @@ SSH_USER="${SSH_USER:-}"
 REMOTE_DIR="${REMOTE_DIR:-$(pwd)}"
 SYNC_DELETE="${SYNC_DELETE:-0}"
 BUILD_REMOTE="${BUILD_REMOTE:-1}"
+COPY_BUILD="${COPY_BUILD:-0}"
 
 if [[ ! -f "$HOSTFILE" ]]; then
   echo "Missing hostfile: $HOSTFILE"
@@ -54,6 +55,16 @@ for i in "${!HOSTS[@]}"; do
     --exclude 'data/' \
     --exclude 'docs/rendered/' \
     ./ "$target:$REMOTE_DIR/"
+  if [[ "$COPY_BUILD" == "1" ]]; then
+    if [[ ! -x build/matrix_hpc ]]; then
+      echo "COPY_BUILD=1 requested, but build/matrix_hpc is missing or not executable."
+      echo "Run make first, preferably with portable CFLAGS when copying across different CPUs."
+      exit 2
+    fi
+    echo "Copying local build/matrix_hpc to $target:$REMOTE_DIR/build/matrix_hpc"
+    ssh "$target" "mkdir -p $REMOTE_DIR/build"
+    rsync -az build/matrix_hpc "$target:$REMOTE_DIR/build/matrix_hpc"
+  fi
   if [[ "$BUILD_REMOTE" == "1" ]]; then
     echo "Building on $target:$REMOTE_DIR"
     ssh "$target" "cd $REMOTE_DIR && make"

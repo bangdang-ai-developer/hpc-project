@@ -37,14 +37,14 @@ WSL/Linux:
 make demo
 ```
 
-Khi demo, chon `mpi_tiled`, nhap `N=128` hoac `N=256` de thay ket qua nhanh. Muon benchmark nghiem tuc dung `N=2048` hoac `N=4096`.
+Khi demo, chon `mpi_tiled`, nhap `M=128, K=128, N=128` de thay ket qua nhanh. Neu muon trinh bay thuat toan matrix-v2, chon `mpi_2d`. Muon benchmark nghiem tuc dung shape `2048x2048x2048` hoac `4096x4096x4096`.
 
 ## 3. Chay benchmark local
 
 PowerShell Windows:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/windows_run_local_pipeline.ps1 -NList "2048"
+powershell -ExecutionPolicy Bypass -File scripts/windows_run_local_pipeline.ps1 -Shapes "2048x2048x2048"
 ```
 
 WSL/Linux:
@@ -94,7 +94,7 @@ Sau khi co IP/SSH cua 3 may Linux:
 
 ```bash
 bash scripts/check_cluster.sh
-SSH_USER=USER HOSTFILE=config/hosts N_LIST="2048 4096" NODES_LIST="1 2 3" PPN=4 REPEAT=5 bash scripts/run_multinode_pipeline.sh
+SSH_USER=USER HOSTFILE=config/hosts SHAPES="2048x2048x2048 4096x4096x4096" NODES_LIST="1 2 3" PPN=4 REPEAT=5 bash scripts/run_multinode_pipeline.sh
 ```
 
 ## 6. Truoc khi nop

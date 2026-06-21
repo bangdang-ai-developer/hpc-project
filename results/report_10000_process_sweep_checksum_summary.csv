@@ -1,0 +1,8 @@
+variant,m,k,n,processes,nodes,run_label,unique_checksum_hashes,status
+mpi_2d,10000,10000,10000,4,3,report_10000_process_sweep,1,OK
+mpi_2d,10000,10000,10000,9,3,report_10000_process_sweep,1,OK
+mpi_2d,10000,10000,10000,12,3,report_10000_process_sweep,1,OK
+mpi_2d,10000,10000,10000,16,3,report_10000_process_sweep,1,OK
+mpi_2d,10000,10000,10000,25,3,report_10000_process_sweep,1,OK
+mpi_2d,10000,10000,10000,36,3,report_10000_process_sweep,1,OK
+mpi_2d,10000,10000,10000,44,3,report_10000_process_sweep,1,OK

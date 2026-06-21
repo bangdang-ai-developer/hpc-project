@@ -7,7 +7,7 @@ from pathlib import Path
 from statistics import mean, pstdev
 
 
-GROUP_FIELDS = ["variant", "n", "processes", "nodes", "tile", "run_label", "mapping", "pe"]
+GROUP_FIELDS = ["variant", "m", "k", "n", "processes", "nodes", "tile", "run_label", "mapping", "pe"]
 
 
 def amdahl_metrics(speedup, p):
@@ -65,7 +65,7 @@ def summarize(raw_path, summary_path, checksum_summary_path):
     if not rows:
         write_rows(summary_path, summary_fields, [])
         write_rows(checksum_summary_path,
-                   ["variant", "n", "processes", "nodes", "run_label", "unique_checksum_hashes", "status"],
+                   ["variant", "m", "k", "n", "processes", "nodes", "run_label", "unique_checksum_hashes", "status"],
                    [])
         return
     groups = defaultdict(list)
@@ -91,15 +91,17 @@ def summarize(raw_path, summary_path, checksum_summary_path):
 
     baseline = {}
     for row in summary_rows:
+        shape_key = (row["m"], row["k"], row["n"])
         if row["run_label"] == "node_sweep" and row["nodes"] == "1":
-            base_key = (row["variant"], row["n"], row["run_label"])
+            base_key = (row["variant"], shape_key, row["run_label"])
             baseline[base_key] = float(row["time_min_sec"])
         elif row["run_label"] != "node_sweep" and row["processes"] == "1":
-            base_key = (row["variant"], row["n"], row["run_label"])
+            base_key = (row["variant"], shape_key, row["run_label"])
             baseline[base_key] = float(row["time_min_sec"])
 
     for row in summary_rows:
-        base_key = (row["variant"], row["n"], row["run_label"])
+        shape_key = (row["m"], row["k"], row["n"])
+        base_key = (row["variant"], shape_key, row["run_label"])
         b = baseline.get(base_key)
         t = float(row["time_min_sec"])
         p = int(row["nodes"]) if row["run_label"] == "node_sweep" else int(row["processes"])
@@ -123,27 +125,29 @@ def summarize(raw_path, summary_path, checksum_summary_path):
             row["amdahl_speedup"] = ""
             row["amdahl_max_speedup"] = ""
 
-    summary_rows.sort(key=lambda r: (r["run_label"], int(r["n"]), r["variant"], int(r["processes"]), int(r["nodes"])))
+    summary_rows.sort(key=lambda r: (r["run_label"], int(r["m"]), int(r["k"]), int(r["n"]), r["variant"], int(r["processes"]), int(r["nodes"])))
     write_rows(summary_path, summary_fields, summary_rows)
 
     checksum_groups = defaultdict(set)
     for row in rows:
-        key = (row["variant"], row["n"], row["processes"], row["nodes"], row["run_label"])
+        key = (row["variant"], row["m"], row["k"], row["n"], row["processes"], row["nodes"], row["run_label"])
         checksum_groups[key].add(row.get("checksum_hash", ""))
     checksum_rows = []
     for key, hashes in checksum_groups.items():
         checksum_rows.append({
             "variant": key[0],
-            "n": key[1],
-            "processes": key[2],
-            "nodes": key[3],
-            "run_label": key[4],
+            "m": key[1],
+            "k": key[2],
+            "n": key[3],
+            "processes": key[4],
+            "nodes": key[5],
+            "run_label": key[6],
             "unique_checksum_hashes": str(len(hashes)),
             "status": "OK" if len(hashes) == 1 else "CHECK",
         })
-    checksum_rows.sort(key=lambda r: (r["run_label"], int(r["n"]), r["variant"], int(r["processes"])))
+    checksum_rows.sort(key=lambda r: (r["run_label"], int(r["m"]), int(r["k"]), int(r["n"]), r["variant"], int(r["processes"])))
     write_rows(checksum_summary_path,
-               ["variant", "n", "processes", "nodes", "run_label", "unique_checksum_hashes", "status"],
+               ["variant", "m", "k", "n", "processes", "nodes", "run_label", "unique_checksum_hashes", "status"],
                checksum_rows)
 
 

@@ -1,0 +1,2 @@
+variant,m,k,n,processes,nodes,tile,repeat_index,seconds,checksum_sum,checksum_abs,checksum_max_abs,checksum_hash,run_label,mapping,pe,threads_per_process,sample_file,full_file
+mpi_2d,64,48,32,6,3,32,0,0.019726823,24967791651,24967791651,18167515,ab455206496dc1c8,node_sweep,ppr:2:node:PE=1,1,1,outputs/smoke_script/C_sample_mpi_2d_M64_K48_N32_P6_R0.csv,

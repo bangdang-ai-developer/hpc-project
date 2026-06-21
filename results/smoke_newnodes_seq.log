@@ -1,0 +1,29 @@
+
+================ RUN CONFIG ================
+Variant                 : seq_tiled
+Matrix shape            : A(64x48) x B(48x32) = C(64x32)
+Repeat count            : 1
+Seed                    : 2026
+Input value range       : integer double [0, 1000]
+MPI processes           : 1
+Nodes detected          : 1
+Threads per process     : 1 (pure MPI)
+Process/core setting    : PE=1, mapping=default
+Tile size               : 32
+Estimated memory        : 0.0000 GB / 1.0000 GB limit
+Work per repeat         : 196608 FLOP (0.000 GFLOP)
+============================================
+
+
+------------- PERFORMANCE METRICS -----------
+Run index               : 1/1
+Execution time          : 0.000065303 seconds
+Throughput              : 3.010704 GFLOP/s
+Processes               : 1 MPI process(es), 1 node(s)
+Baseline time           : 0.000065303 seconds
+Traditional speedup     : 1.000000
+Traditional efficiency  : 1.000000
+Checksum hash           : ab455206496dc1c8
+Sample file             : not saved
+---------------------------------------------
+RESULT,seq_tiled,64,48,32,1,1,32,0,0.000065303,24967791651,24967791651,18167515,ab455206496dc1c8,manual,default,1,1,,

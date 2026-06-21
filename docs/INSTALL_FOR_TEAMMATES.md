@@ -64,6 +64,8 @@ Khi chuong trinh hoi, nhap:
 ```text
 processes: 2
 algorithm: 4
+M: 128
+K: 128
 N: 128
 seed: Enter
 save full result: n
@@ -117,7 +119,7 @@ Gia tri demo nen dung:
 ```text
 processes: 2 hoac 4
 algorithm: 4
-N: 128 hoac 256
+M/K/N: 128 hoac 256
 seed: Enter
 save full result: n
 ```
@@ -184,13 +186,13 @@ SSH_USER=USER bash scripts/check_cluster.sh
 10. May chinh chay benchmark nho truoc:
 
 ```bash
-SSH_USER=USER HOSTFILE=config/hosts N_LIST="512" NODES_LIST="1 2 3" PPN=2 bash scripts/run_multinode.sh
+SSH_USER=USER HOSTFILE=config/hosts SHAPES="512x512x512" NODES_LIST="1 2 3" PPN=2 bash scripts/run_multinode.sh
 ```
 
 11. Neu benchmark nho OK, may chinh chay benchmark chinh:
 
 ```bash
-SSH_USER=USER HOSTFILE=config/hosts N_LIST="2048 4096" NODES_LIST="1 2 3" PPN=4 REPEAT=5 bash scripts/run_multinode_pipeline.sh
+SSH_USER=USER HOSTFILE=config/hosts SHAPES="2048x2048x2048 4096x4096x4096" NODES_LIST="1 2 3" PPN=4 REPEAT=5 bash scripts/run_multinode_pipeline.sh
 ```
 
 ## D. Ghi chu rieng cho may chinh
@@ -209,6 +211,21 @@ IP_WORKER_1 slots=4
 IP_WORKER_2 slots=4
 ```
 
+Neu muon tai hien cac benchmark cuoi trong bao cao, co the copy cac template
+`config/hosts_9`, `config/hosts_12`, `config/hosts_16`, `config/hosts_44`...
+thanh file rieng va thay `node1/node2/node3` bang IP/hostname that. Cac file
+template nay chi giu slot mapping, vi du `hosts_9` la 3/3/3 va `hosts_44` la
+12/16/16 tren 3 node.
+
+Ket qua benchmark va bao cao cuoi da duoc luu san de team review:
+
+```text
+results/
+docs/report_10000/BaoCao_MPI_NhanMaTran_10000.pdf
+docs/report_10000/report_10000.tex
+docs/report_10000/figures/
+```
+
 Dong bo code sang worker:
 
 ```bash
@@ -223,8 +240,8 @@ SSH_USER=USER REMOTE_DIR=/home/USER/hpc-project bash scripts/sync_to_nodes.sh
 
 ## E. Luu y
 
-- Khong chay `N=4096` hoac `N=8192` ngay khi moi cai, vi co the mat nhieu thoi gian.
-- Test ban dau chi dung `N=128`, `N=256`, hoac toi da `N=512`.
+- Khong chay shape `4096x4096x4096` hoac `8192x8192x8192` ngay khi moi cai, vi co the mat nhieu thoi gian.
+- Test ban dau chi dung `128x128x128`, `256x256x256`, hoac toi da `512x512x512`.
 - Neu chi lam worker node thi khong can tu sua code.
 - Neu bi loi thieu package, chay lai:
 
@@ -246,5 +263,5 @@ Sau khi cai dung, may cua moi ban phai:
 - Clone duoc repo.
 - Chay `make` thanh cong.
 - Chay `bash scripts/check_local_env.sh` thanh cong.
-- Chay `make demo` voi `N=128` thanh cong.
+- Chay `make demo` voi `M=128, K=128, N=128` thanh cong.
 - Neu lam worker node, may chinh SSH vao duoc bang `ssh USER@IP hostname`.

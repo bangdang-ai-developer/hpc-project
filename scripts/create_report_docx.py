@@ -114,20 +114,21 @@ def build_doc():
 
     h(doc, "1. Co so ly thuyet va phan tich thuat toan")
     p(doc, "Gioi thieu bai toan: de tai thuc hien phep nhan ma tran kich thuoc lon, xay dung chuong trinh tuan tu va chuong trinh song song bang MPI/OpenMPI, sau do danh gia kha nang tang toc khi thay doi so process va so node.")
-    p(doc, "Bai toan de tai 1 la nhan hai ma tran vuong kich thuoc lon C = A x B. Voi ma tran N x N, moi phan tu C[i,j] duoc tinh bang tong A[i,k] * B[k,j] voi k tu 0 den N-1.")
-    p(doc, "Thuat toan tuan tu co ba vong lap long nhau nen do phuc tap tinh toan la O(N^3). So phep toan dau cham dong ly thuyet xap xi 2 x N^3 FLOP.")
+    p(doc, "Bai toan de tai 1 la nhan hai ma tran chu nhat kich thuoc lon C = A x B. Voi A co kich thuoc M x K va B co kich thuoc K x N, ket qua C co kich thuoc M x N. Moi phan tu C[i,j] duoc tinh bang tong A[i,t] * B[t,j] voi t tu 0 den K-1.")
+    p(doc, "Thuat toan tuan tu co ba vong lap long nhau nen do phuc tap tinh toan la O(M x K x N). So phep toan dau cham dong ly thuyet xap xi 2 x M x K x N FLOP.")
     table(doc, ["Variant", "Vai tro", "Ghi chu"], [
-        ["seq", "Baseline tuan tu", "De giai thich cong thuc O(N^3)."],
+        ["seq", "Baseline tuan tu", "De giai thich cong thuc O(M x K x N)."],
         ["seq_tiled", "Baseline tuan tu toi uu cache", "Dung tile de tang locality bo nho."],
         ["mpi", "Ban song song MPI", "Chia hang A, broadcast B, gather C."],
         ["mpi_tiled", "Ban song song MPI toi uu cache", "Khuyen nghi dung cho benchmark chinh."],
+        ["mpi_2d", "Ban MPI chia luoi 2D", "Scatter block hang A va block cot B da transpose theo matrix-v2."],
     ])
 
     h(doc, "2. Thiet ke giai phap song song bang MPI/OpenMPI")
-    p(doc, "Chuong trinh dung pure MPI, khong dung OpenMP. Rank 0 sinh hoac doc du lieu A/B, chia cac hang cua A cho cac process bang MPI_Scatterv, broadcast toan bo B bang MPI_Bcast, moi process tinh mot khoi hang cua C, sau do rank 0 gom ket qua bang MPI_Gatherv.")
+    p(doc, "Chuong trinh dung pure MPI, khong dung OpenMP. Cac bien the mpi/mpi_tiled chia cac hang cua A bang MPI_Scatterv, broadcast toan bo B bang MPI_Bcast, moi process tinh mot khoi hang cua C, sau do rank 0 gom ket qua bang MPI_Gatherv. Bien the mpi_2d dung luoi process 2 chieu, scatter block hang A va block cot B da transpose, moi process tinh mot block C.")
     table(doc, ["Thanh phan", "Thiet ke don gian"], [
         ["Phan chia du lieu", "Chia theo hang; cac process nhan so hang gan bang nhau."],
-        ["Tinh local", "Nhan basic hoac tiled tren phan hang duoc giao."],
+        ["Tinh local", "Nhan basic/tiled tren phan hang, hoac nhan block voi B transpose trong mpi_2d."],
         ["Input dong", "Demo interactive cho nhap N/variant/seed; sai thi bao loi va nhap lai."],
         ["Kiem soat RAM", "Uoc luong RAM truoc khi chay va tu choi cau hinh vuot nguong."],
         ["Core/process", "threads_per_process = 1; danh gia mapping/binding bang OpenMPI."],
@@ -157,7 +158,7 @@ def build_doc():
         ["Process sweep", "Can chay 1,2,4,8 va 16 neu tai nguyen cho phep."],
         ["Node sweep", "Can chay 1,2,3 node tren 3 may Linux rieng biet."],
         ["Repeat", "5 lan moi cau hinh de giam nhieu."],
-        ["Kich thuoc N", "Khuyen nghi 2048, 4096; thu 8192 neu RAM/thoi gian cho phep."],
+        ["Kich thuoc MxKxN", "Khuyen nghi 2048x2048x2048, 4096x4096x4096; thu shape chu nhat neu can demo M,K,N khac nhau."],
     ])
     env_rows = rows(ENVIRONMENT)
     if env_rows:
@@ -182,9 +183,11 @@ def build_doc():
         ])
     summary = rows(SUMMARY)
     if summary:
-        table(doc, ["variant", "N", "P", "nodes", "avg(s)", "min(s)", "speedup", "eff", "Amdahl serial", "Amdahl max"],
+        table(doc, ["variant", "M", "K", "N", "P", "nodes", "avg(s)", "min(s)", "speedup", "eff", "Amdahl serial", "Amdahl max"],
               [[
                   r["variant"],
+                  r["m"],
+                  r["k"],
                   r["n"],
                   r["processes"],
                   r["nodes"],
@@ -197,10 +200,10 @@ def build_doc():
               ] for r in summary[:14]])
     else:
         p(doc, "Chua co du lieu benchmark chinh thuc trong results/summary.csv. Bang duoi day la ke hoach do, khong phai so lieu thuc nghiem. Sau khi chay pipeline benchmark, script se tu dong chen bang ket qua that.")
-        table(doc, ["N", "Variant", "Pham vi do", "Trang thai evidence"], [
-            ["2048", "mpi_tiled", "1,2,4,8 processes", "Cho chay benchmark local/cluster"],
-            ["4096", "mpi_tiled", "1,2,4,8 processes; 1,2,3 nodes", "Cho chay benchmark local/cluster"],
-            ["8192", "mpi_tiled", "Mo rong neu RAM/thoi gian cho phep", "Tuy chon"],
+        table(doc, ["MxKxN", "Variant", "Pham vi do", "Trang thai evidence"], [
+            ["2048x2048x2048", "mpi_tiled, mpi_2d", "1,2,4,8 processes", "Cho chay benchmark local/cluster"],
+            ["4096x4096x4096", "mpi_tiled, mpi_2d", "1,2,4,8 processes; 1,2,3 nodes", "Cho chay benchmark local/cluster"],
+            ["3072x2048x4096", "mpi_tiled, mpi_2d", "Mo rong neu RAM/thoi gian cho phep", "Tuy chon"],
         ])
 
     h(doc, "Bieu do Execution Time, Speedup, Efficiency", 2)
@@ -209,16 +212,16 @@ def build_doc():
     checks = rows(CHECKSUM_SUMMARY)
     if checks:
         h(doc, "Evidence checksum", 2)
-        table(doc, ["variant", "N", "processes", "nodes", "status"],
-              [[r["variant"], r["n"], r["processes"], r["nodes"], r["status"]] for r in checks[:8]])
+        table(doc, ["variant", "M", "K", "N", "processes", "nodes", "status"],
+              [[r["variant"], r["m"], r["k"], r["n"], r["processes"], r["nodes"], r["status"]] for r in checks[:8]])
 
     h(doc, "5. Ket luan va phu luc nop bai")
     p(doc, "Do an da xay dung chuong trinh C + MPI gon, de giai thich, co ban tuan tu, ban song song, benchmark script va evidence checksum/sample. Cac ket qua 3 node se duoc cap nhat sau khi co du 3 may Linux that trong cung LAN/Wi-Fi.")
 
     h(doc, "Phu luc: lenh chay mau")
-    p(doc, 'N_LIST="2048 4096" NP_LIST="1 2 4 8" bash scripts/run_benchmark.sh')
+    p(doc, 'SHAPES="2048x2048x2048 4096x4096x4096" NP_LIST="1 2 4 8" bash scripts/run_benchmark.sh')
     p(doc, 'Neu cluster du tai nguyen, co the them 16 vao NP_LIST.')
-    p(doc, 'HOSTFILE=config/hosts N_LIST="2048 4096" NODES_LIST="1 2 3" PPN=4 bash scripts/run_multinode.sh')
+    p(doc, 'HOSTFILE=config/hosts SHAPES="2048x2048x2048 4096x4096x4096" NODES_LIST="1 2 3" PPN=4 bash scripts/run_multinode.sh')
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     doc.save(OUT)

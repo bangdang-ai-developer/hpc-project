@@ -1,0 +1,4 @@
+variant,m,k,n,processes,nodes,tile,repeat_index,seconds,checksum_sum,checksum_abs,checksum_max_abs,checksum_hash,run_label,mapping,pe,threads_per_process,sample_file,full_file
+mpi_2d,1024,1024,1024,64,3,32,0,19.742539535,268930244973588,268930244973588,289595645,c3fc17cb3c3c1967,allcore_probe,slots-12-32-20-linear-coll,1,1,,
+mpi_2d,2048,2048,2048,64,3,32,0,65.419131127,2147202409604900,2147202409604900,560140257,aa71d656718f1d9a,allcore_probe,slots-12-32-20-linear-coll,1,1,,
+mpi_2d,4096,4096,4096,64,3,32,0,249.558345827,17178352257339180,17178352257339180,1096509498,9f4b89b7abbb2cda,allcore_probe,slots-12-32-20-linear-coll,1,1,,

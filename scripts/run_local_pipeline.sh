@@ -3,9 +3,9 @@ set -euo pipefail
 
 # One-command local pipeline for the report evidence.
 # Override from the command line when needed, for example:
-#   N_LIST="2048 4096" NP_LIST="1 2 4 8" REPEAT=5 bash scripts/run_local_pipeline.sh
+#   SHAPES="2048x2048x2048 4096x4096x4096" NP_LIST="1 2 4 8" REPEAT=5 bash scripts/run_local_pipeline.sh
 
-N_LIST="${N_LIST:-2048}"
+SHAPES="${SHAPES:-2048x2048x2048}"
 NP_LIST="${NP_LIST:-1 2 4 8}"
 REPEAT="${REPEAT:-5}"
 FRESH="${FRESH:-1}"
@@ -13,7 +13,7 @@ FRESH="${FRESH:-1}"
 echo "========================================"
 echo " Local benchmark + report pipeline"
 echo "========================================"
-echo "N_LIST=$N_LIST"
+echo "SHAPES=$SHAPES"
 echo "NP_LIST=$NP_LIST"
 echo "REPEAT=$REPEAT"
 echo "FRESH=$FRESH"
@@ -26,7 +26,7 @@ if [[ "$FRESH" == "1" ]]; then
 fi
 
 bash scripts/capture_environment.sh
-N_LIST="$N_LIST" NP_LIST="$NP_LIST" REPEAT="$REPEAT" bash scripts/run_benchmark.sh
+SHAPES="$SHAPES" NP_LIST="$NP_LIST" REPEAT="$REPEAT" bash scripts/run_benchmark.sh
 python3 scripts/make_chart_svgs.py
 python3 scripts/compare_checksums.py
 python3 scripts/create_report_docx.py

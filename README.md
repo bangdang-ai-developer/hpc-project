@@ -55,13 +55,13 @@ make pipeline
 Tren Windows PowerShell:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/windows_run_local_pipeline.ps1 -NList "2048"
+powershell -ExecutionPolicy Bypass -File scripts/windows_run_local_pipeline.ps1 -Shapes "2048x2048x2048"
 ```
 
-Neu may chiu duoc, chay them `N=4096`:
+Neu may chiu duoc, chay them shape lon hon:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/windows_run_local_pipeline.ps1 -NList "2048 4096"
+powershell -ExecutionPolicy Bypass -File scripts/windows_run_local_pipeline.ps1 -Shapes "2048x2048x2048 4096x4096x4096"
 ```
 
 Ket qua sinh ra:
@@ -73,23 +73,37 @@ docs/charts/*.png
 docs/BaoCao_DeTai1_NhanMaTran_MPI.docx
 ```
 
+Ket qua benchmark cuoi cho bai `10000x10000x10000` da duoc commit trong:
+
+```text
+results/
+docs/report_10000/BaoCao_MPI_NhanMaTran_10000.pdf
+docs/report_10000/report_10000.tex
+docs/report_10000/figures/
+```
+
 ## Benchmark 3 may that
 
-Sua `config/hosts` theo `config/hosts.example`, sau do chay:
+Sua `config/hosts` theo `config/hosts.example`, hoac copy cac template
+`config/hosts_9`, `config/hosts_12`, `config/hosts_44` roi thay `node1/node2/node3`
+bang IP/hostname that cua cac may trong LAN. Sau do chay:
 
 ```bash
 bash scripts/check_cluster.sh
-SSH_USER=USER HOSTFILE=config/hosts N_LIST="2048 4096" NODES_LIST="1 2 3" PPN=4 REPEAT=5 bash scripts/run_multinode_pipeline.sh
+SSH_USER=USER HOSTFILE=config/hosts SHAPES="2048x2048x2048 4096x4096x4096" NODES_LIST="1 2 3" PPN=4 REPEAT=5 bash scripts/run_multinode_pipeline.sh
 ```
 
 Phan 3 node chi chay khi co 3 may Linux that trong cung LAN/Wi-Fi.
+Nhung hostfile `hosts_*` trong repo chi giu slot mapping de tai hien benchmark,
+khong chua IP may ca nhan.
 
 ## Thuat toan
 
-- `seq`: nhan ma tran tuan tu, dung de phan tich `O(N^3)`.
+- `seq`: nhan ma tran tuan tu A(MxK) * B(KxN), dung de phan tich `O(M*K*N)`.
 - `seq_tiled`: ban tuan tu co toi uu cache.
 - `mpi`: chia hang cua A, broadcast B, gather C.
 - `mpi_tiled`: chia hang + tiled local multiply, dung cho benchmark chinh.
+- `mpi_2d`: chia process theo luoi 2D, scatter block hang A va block cot B da transpose theo y tuong matrix-v2.
 
 ## Chuan bi nop bai
 

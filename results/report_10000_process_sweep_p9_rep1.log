@@ -1,0 +1,32 @@
+
+================ RUN CONFIG ================
+Variant                 : mpi_2d
+Matrix shape            : A(10000x10000) x B(10000x10000) = C(10000x10000)
+Repeat count            : 1
+Seed                    : 2026
+Input value range       : integer double [0, 1000]
+MPI processes           : 9
+Nodes detected          : 3
+Threads per process     : 1 (pure MPI)
+Process/core setting    : PE=1, mapping=slots_3_3_3_panel_10000
+Tile size               : 10000
+MPI 2D grid             : 3 x 3
+MPI 2D block            : 3334 rows x 3334 cols
+MPI 2D panel K          : 10000
+Estimated memory        : 2.5665 GB / 7.0000 GB limit
+Work per repeat         : 2000000000000 FLOP (2000.000 GFLOP)
+============================================
+
+[HPC 2D] 3x3
+
+------------- PERFORMANCE METRICS -----------
+Run index               : 1/1
+Execution time          : 147.618007057 seconds
+Throughput              : 13.548483 GFLOP/s
+Processes               : 9 MPI process(es), 3 node(s)
+Speedup/Efficiency      : computed later in summary.csv
+Checksum hash           : c14405814301863a
+Sample file             : not saved
+---------------------------------------------
+RESULT,mpi_2d,10000,10000,10000,9,3,10000,0,147.618007057,2.5001135404453891e+17,2.5001135404453891e+17,2619315240,c14405814301863a,report_10000_process_sweep,slots_3_3_3_panel_10000,1,1,,
+WALL_CLOCK_SECONDS,168.08

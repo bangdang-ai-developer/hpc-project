@@ -1,0 +1,4 @@
+variant,m,k,n,processes,nodes,tile,repeat_index,seconds,checksum_sum,checksum_abs,checksum_max_abs,checksum_hash,run_label,mapping,pe,threads_per_process,sample_file,full_file
+seq_tiled,65,33,70,1,1,32,0,0.000148389,37907223990,37907223990,13102286,a58d9d5f498a8872,opt_correctness,local,1,1,,
+mpi_2d,65,33,70,3,1,32,0,0.000205663,37907223990,37907223990,13102286,a58d9d5f498a8872,opt_correctness,local-np3,1,1,,
+mpi_2d,128,96,80,4,1,32,0,0.001356085,249288668174,249288668174,32094634,5b156c9bd51187d1,opt_correctness_sample,local-np4,1,1,outputs/opt_correctness/C_sample_mpi_2d_M128_K96_N80_P4_R0.csv,

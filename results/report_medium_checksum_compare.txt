@@ -1,0 +1,33 @@
+== Stability inside each configuration ==
+OK ('mpi', '1024', '1024', '1024', '16', '3', 'report_medium'): 1 unique hash(es)
+OK ('mpi', '1024', '1024', '1024', '32', '3', 'report_medium'): 1 unique hash(es)
+OK ('mpi', '1024', '1024', '1024', '44', '3', 'report_medium'): 1 unique hash(es)
+OK ('mpi', '2048', '2048', '2048', '16', '3', 'report_medium'): 1 unique hash(es)
+OK ('mpi', '2048', '2048', '2048', '32', '3', 'report_medium'): 1 unique hash(es)
+OK ('mpi', '2048', '2048', '2048', '44', '3', 'report_medium'): 1 unique hash(es)
+OK ('mpi_2d', '1024', '1024', '1024', '16', '3', 'report_medium'): 1 unique hash(es)
+OK ('mpi_2d', '1024', '1024', '1024', '32', '3', 'report_medium'): 1 unique hash(es)
+OK ('mpi_2d', '1024', '1024', '1024', '44', '3', 'report_medium'): 1 unique hash(es)
+OK ('mpi_2d', '2048', '2048', '2048', '16', '3', 'report_medium'): 1 unique hash(es)
+OK ('mpi_2d', '2048', '2048', '2048', '32', '3', 'report_medium'): 1 unique hash(es)
+OK ('mpi_2d', '2048', '2048', '2048', '44', '3', 'report_medium'): 1 unique hash(es)
+OK ('mpi_tiled', '1024', '1024', '1024', '16', '3', 'report_medium'): 1 unique hash(es)
+OK ('mpi_tiled', '1024', '1024', '1024', '32', '3', 'report_medium'): 1 unique hash(es)
+OK ('mpi_tiled', '1024', '1024', '1024', '44', '3', 'report_medium'): 1 unique hash(es)
+OK ('mpi_tiled', '2048', '2048', '2048', '16', '3', 'report_medium'): 1 unique hash(es)
+OK ('mpi_tiled', '2048', '2048', '2048', '32', '3', 'report_medium'): 1 unique hash(es)
+OK ('mpi_tiled', '2048', '2048', '2048', '44', '3', 'report_medium'): 1 unique hash(es)
+
+== Approximate comparison with baseline sums ==
+OK MxKxN=1024x1024x1024 mpi p=16 rel_sum_error=0.000e+00
+OK MxKxN=1024x1024x1024 mpi_tiled p=16 rel_sum_error=0.000e+00
+OK MxKxN=1024x1024x1024 mpi p=32 rel_sum_error=0.000e+00
+OK MxKxN=1024x1024x1024 mpi_tiled p=32 rel_sum_error=0.000e+00
+OK MxKxN=1024x1024x1024 mpi p=44 rel_sum_error=0.000e+00
+OK MxKxN=1024x1024x1024 mpi_tiled p=44 rel_sum_error=0.000e+00
+OK MxKxN=2048x2048x2048 mpi p=16 rel_sum_error=0.000e+00
+OK MxKxN=2048x2048x2048 mpi_tiled p=16 rel_sum_error=0.000e+00
+OK MxKxN=2048x2048x2048 mpi p=32 rel_sum_error=0.000e+00
+OK MxKxN=2048x2048x2048 mpi_tiled p=32 rel_sum_error=0.000e+00
+OK MxKxN=2048x2048x2048 mpi p=44 rel_sum_error=0.000e+00
+OK MxKxN=2048x2048x2048 mpi_tiled p=44 rel_sum_error=0.000e+00

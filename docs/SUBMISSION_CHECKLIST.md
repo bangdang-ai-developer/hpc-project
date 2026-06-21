@@ -18,13 +18,13 @@ Checklist nay dung truoc khi nop bai.
 ## Lenh tao evidence local
 
 ```bash
-N_LIST="2048" NP_LIST="1 2 4 8" REPEAT=5 bash scripts/run_local_pipeline.sh
+SHAPES="2048x2048x2048" NP_LIST="1 2 4 8" REPEAT=5 bash scripts/run_local_pipeline.sh
 ```
 
 Neu may chiu duoc:
 
 ```bash
-N_LIST="2048 4096" NP_LIST="1 2 4 8" REPEAT=5 bash scripts/run_local_pipeline.sh
+SHAPES="2048x2048x2048 4096x4096x4096" NP_LIST="1 2 4 8" REPEAT=5 bash scripts/run_local_pipeline.sh
 ```
 
 ## Lenh benchmark 3 may that
@@ -32,7 +32,7 @@ N_LIST="2048 4096" NP_LIST="1 2 4 8" REPEAT=5 bash scripts/run_local_pipeline.sh
 Chi chay khi da co 3 may Linux that va `config/hosts` dung IP/hostname that.
 
 ```bash
-SSH_USER=USER HOSTFILE=config/hosts N_LIST="2048 4096" NODES_LIST="1 2 3" PPN=4 REPEAT=5 bash scripts/run_multinode_pipeline.sh
+SSH_USER=USER HOSTFILE=config/hosts SHAPES="2048x2048x2048 4096x4096x4096" NODES_LIST="1 2 3" PPN=4 REPEAT=5 bash scripts/run_multinode_pipeline.sh
 ```
 
 ## Kiem tra truoc khi nop

@@ -1,0 +1,19 @@
+
+================ RUN CONFIG ================
+Variant                 : mpi_2d
+Matrix shape            : A(10000x10000) x B(10000x10000) = C(10000x10000)
+Repeat count            : 1
+Seed                    : 2026
+Input value range       : integer double [0, 1000]
+MPI processes           : 64
+Nodes detected          : 3
+Threads per process     : 1 (pure MPI)
+Process/core setting    : PE=1, mapping=slots_12_32_20
+Tile size               : 32
+MPI 2D grid             : 8 x 8
+MPI 2D block            : 1250 rows x 1250 cols
+Estimated memory        : 1.5029 GB / 7.0000 GB limit
+Work per repeat         : 2000000000000 FLOP (2000.000 GFLOP)
+============================================
+
+[HPC 2D] 8x8

@@ -5,10 +5,10 @@ set -euo pipefail
 # Run only after config/hosts contains the real machines and SSH/OpenMPI works.
 #
 # Example:
-#   SSH_USER=your_user HOSTFILE=config/hosts N_LIST="2048 4096" NODES_LIST="1 2 3" PPN=4 REPEAT=5 bash scripts/run_multinode_pipeline.sh
+#   SSH_USER=your_user HOSTFILE=config/hosts SHAPES="2048x2048x2048 4096x4096x4096" NODES_LIST="1 2 3" PPN=4 REPEAT=5 bash scripts/run_multinode_pipeline.sh
 
 HOSTFILE="${HOSTFILE:-config/hosts}"
-N_LIST="${N_LIST:-2048 4096}"
+SHAPES="${SHAPES:-2048x2048x2048 4096x4096x4096}"
 NODES_LIST="${NODES_LIST:-1 2 3}"
 PPN="${PPN:-4}"
 REPEAT="${REPEAT:-5}"
@@ -21,7 +21,7 @@ echo "========================================"
 echo " Multinode benchmark + report pipeline"
 echo "========================================"
 echo "HOSTFILE=$HOSTFILE"
-echo "N_LIST=$N_LIST"
+echo "SHAPES=$SHAPES"
 echo "NODES_LIST=$NODES_LIST"
 echo "PPN=$PPN"
 echo "REPEAT=$REPEAT"
@@ -52,9 +52,9 @@ HOSTFILE="$HOSTFILE" CHECK_REMOTE=1 REMOTE_DIR="$REMOTE_DIR" bash scripts/captur
 if [[ "$RUN_SEQ_BASELINE" == "1" ]]; then
   echo
   echo "Running local seq_tiled baseline for checksum correctness evidence..."
-  N_LIST="$N_LIST" NP_LIST="1" VARIANTS="" SEQ_VARIANTS="seq_tiled" REPEAT="$REPEAT" bash scripts/run_benchmark.sh
+  SHAPES="$SHAPES" NP_LIST="1" VARIANTS="" SEQ_VARIANTS="seq_tiled" REPEAT="$REPEAT" bash scripts/run_benchmark.sh
 fi
-HOSTFILE="$HOSTFILE" N_LIST="$N_LIST" NODES_LIST="$NODES_LIST" PPN="$PPN" REPEAT="$REPEAT" REMOTE_DIR="$REMOTE_DIR" bash scripts/run_multinode.sh
+HOSTFILE="$HOSTFILE" SHAPES="$SHAPES" NODES_LIST="$NODES_LIST" PPN="$PPN" REPEAT="$REPEAT" REMOTE_DIR="$REMOTE_DIR" bash scripts/run_multinode.sh
 python3 scripts/make_chart_svgs.py
 python3 scripts/compare_checksums.py
 python3 scripts/create_report_docx.py

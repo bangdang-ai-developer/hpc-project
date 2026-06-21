@@ -72,10 +72,11 @@ MPI_ROOT_FLAGS=()
 if [[ "$(id -u)" == "0" ]]; then
   MPI_ROOT_FLAGS=(--allow-run-as-root)
 fi
-mpirun "${MPI_ROOT_FLAGS[@]}" -np 1 ./build/matrix_hpc --variant seq --n 64 --repeat 1 --max-ram-gb 1 --save-sample
-mpirun "${MPI_ROOT_FLAGS[@]}" -np 1 ./build/matrix_hpc --variant seq_tiled --n 64 --repeat 1 --max-ram-gb 1 --save-sample
-mpirun "${MPI_ROOT_FLAGS[@]}" -np 2 ./build/matrix_hpc --variant mpi --n 64 --repeat 1 --max-ram-gb 1 --save-sample
-mpirun "${MPI_ROOT_FLAGS[@]}" -np 2 ./build/matrix_hpc --variant mpi_tiled --n 64 --repeat 1 --max-ram-gb 1 --save-sample
+mpirun "${MPI_ROOT_FLAGS[@]}" -np 1 ./build/matrix_hpc --variant seq --m 64 --k 48 --n 32 --repeat 1 --max-ram-gb 1 --save-sample
+mpirun "${MPI_ROOT_FLAGS[@]}" -np 1 ./build/matrix_hpc --variant seq_tiled --m 64 --k 48 --n 32 --repeat 1 --max-ram-gb 1 --save-sample
+mpirun "${MPI_ROOT_FLAGS[@]}" -np 2 ./build/matrix_hpc --variant mpi --m 64 --k 48 --n 32 --repeat 1 --max-ram-gb 1 --save-sample
+mpirun "${MPI_ROOT_FLAGS[@]}" -np 2 ./build/matrix_hpc --variant mpi_tiled --m 64 --k 48 --n 32 --repeat 1 --max-ram-gb 1 --save-sample
+mpirun "${MPI_ROOT_FLAGS[@]}" -np 2 ./build/matrix_hpc --variant mpi_2d --m 64 --k 48 --n 32 --repeat 1 --max-ram-gb 1 --save-sample
 
 echo
 echo "Local environment is ready."

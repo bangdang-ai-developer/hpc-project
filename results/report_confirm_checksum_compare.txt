@@ -1,0 +1,8 @@
+== Stability inside each configuration ==
+OK ('mpi', '4096', '4096', '4096', '44', '3', 'report_confirm'): 1 unique hash(es)
+OK ('mpi_2d', '4096', '4096', '4096', '16', '3', 'report_confirm'): 1 unique hash(es)
+OK ('mpi_tiled', '4096', '4096', '4096', '44', '3', 'report_confirm'): 1 unique hash(es)
+
+== Approximate comparison with baseline sums ==
+OK MxKxN=4096x4096x4096 mpi_tiled p=44 rel_sum_error=2.475e-13
+OK MxKxN=4096x4096x4096 mpi p=44 rel_sum_error=2.475e-13

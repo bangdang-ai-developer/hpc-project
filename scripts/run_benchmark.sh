@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-N_LIST="${N_LIST:-2048 4096}"
+SHAPES="${SHAPES:-2048x2048x2048 4096x4096x4096}"
 NP_LIST="${NP_LIST:-1 2 4 8}"
-VARIANTS="${VARIANTS:-mpi mpi_tiled}"
+VARIANTS="${VARIANTS:-mpi mpi_tiled mpi_2d}"
 SEQ_VARIANTS="${SEQ_VARIANTS:-seq seq_tiled}"
 REPEAT="${REPEAT:-5}"
 SEED="${SEED:-2026}"
@@ -22,20 +22,36 @@ fi
 mkdir -p build results outputs data docs/charts
 make
 
-HEADER="variant,n,processes,nodes,tile,repeat_index,seconds,checksum_sum,checksum_abs,checksum_max_abs,checksum_hash,run_label,mapping,pe,threads_per_process,sample_file,full_file"
+HEADER="variant,m,k,n,processes,nodes,tile,repeat_index,seconds,checksum_sum,checksum_abs,checksum_max_abs,checksum_hash,run_label,mapping,pe,threads_per_process,sample_file,full_file"
+if [[ -f "$RAW" ]] && [[ "$(head -n 1 "$RAW")" != "$HEADER" ]]; then
+  echo "Existing $RAW uses an old schema; recreating it for m,k,n results."
+  rm -f "$RAW"
+fi
+if [[ -f "$CHECKSUMS" ]] && [[ "$(head -n 1 "$CHECKSUMS")" != "$HEADER" ]]; then
+  echo "Existing $CHECKSUMS uses an old schema; recreating it for m,k,n results."
+  rm -f "$CHECKSUMS"
+fi
 if [[ ! -f "$RAW" ]]; then
   echo "$HEADER" > "$RAW"
 fi
 
 run_case() {
   local variant="$1"
-  local n="$2"
+  local shape="$2"
   local np="$3"
+  local m k n
   local tmp
+  IFS=x read -r m k n <<< "$shape"
+  if [[ -z "${m:-}" || -z "${k:-}" || -z "${n:-}" ]]; then
+    echo "Invalid shape '$shape'. Use MxKxN, for example 2048x2048x2048."
+    exit 2
+  fi
   tmp="$(mktemp)"
-  echo "Running variant=$variant N=$n np=$np repeat=$REPEAT"
+  echo "Running variant=$variant shape=${m}x${k}x${n} np=$np repeat=$REPEAT"
   mpirun "${MPI_ROOT_FLAGS[@]}" -np "$np" --bind-to core ./build/matrix_hpc \
     --variant "$variant" \
+    --m "$m" \
+    --k "$k" \
     --n "$n" \
     --seed "$SEED" \
     --repeat "$REPEAT" \
@@ -51,14 +67,14 @@ run_case() {
   rm -f "$tmp"
 }
 
-for n in $N_LIST; do
+for shape in $SHAPES; do
   for variant in $SEQ_VARIANTS; do
-    run_case "$variant" "$n" 1
+    run_case "$variant" "$shape" 1
   done
 
   for variant in $VARIANTS; do
     for np in $NP_LIST; do
-      run_case "$variant" "$n" "$np"
+      run_case "$variant" "$shape" "$np"
     done
   done
 done

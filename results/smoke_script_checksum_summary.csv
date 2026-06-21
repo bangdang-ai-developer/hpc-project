@@ -1,0 +1,2 @@
+variant,m,k,n,processes,nodes,run_label,unique_checksum_hashes,status
+mpi_2d,64,48,32,6,3,node_sweep,1,OK

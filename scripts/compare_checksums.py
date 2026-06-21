@@ -31,7 +31,7 @@ def main():
 
     stable_groups = defaultdict(set)
     for r in rows:
-        key = (r["variant"], r["n"], r["processes"], r["nodes"], r["run_label"])
+        key = (r["variant"], r["m"], r["k"], r["n"], r["processes"], r["nodes"], r["run_label"])
         stable_groups[key].add(r["checksum_hash"])
 
     ok = True
@@ -42,15 +42,16 @@ def main():
             ok = False
         print(f"{status} {key}: {len(hashes)} unique hash(es)")
 
-    baseline_by_n = {}
+    baseline_by_shape = {}
     for r in rows:
         if r["variant"] == args.baseline:
-            baseline_by_n.setdefault(r["n"], r)
+            baseline_by_shape.setdefault((r["m"], r["k"], r["n"]), r)
 
-    if baseline_by_n:
+    if baseline_by_shape:
         print("\n== Approximate comparison with baseline sums ==")
         for r in rows:
-            base = baseline_by_n.get(r["n"])
+            shape = (r["m"], r["k"], r["n"])
+            base = baseline_by_shape.get(shape)
             if not base or r["variant"] == args.baseline:
                 continue
             bsum = f(base["checksum_sum"])
@@ -60,7 +61,7 @@ def main():
             status = "OK" if rel <= args.tolerance else "CHECK"
             if status != "OK":
                 ok = False
-            print(f"{status} N={r['n']} {r['variant']} p={r['processes']} rel_sum_error={rel:.3e}")
+            print(f"{status} MxKxN={r['m']}x{r['k']}x{r['n']} {r['variant']} p={r['processes']} rel_sum_error={rel:.3e}")
     else:
         print(f"\nNo baseline variant '{args.baseline}' found. Run seq_tiled once for comparison evidence.")
 

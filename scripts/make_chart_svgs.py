@@ -274,11 +274,12 @@ def main():
         ("speedup", "Speedup", "Speedup"),
         ("efficiency", "Parallel Efficiency", "Efficiency"),
     ]
-    by_label_n = defaultdict(list)
+    by_label_shape = defaultdict(list)
     for row in rows:
-        by_label_n[(row["run_label"], row["n"])].append(row)
+        shape = f"{row['m']}x{row['k']}x{row['n']}"
+        by_label_shape[(row["run_label"], shape)].append(row)
 
-    for (label, n), group in by_label_n.items():
+    for (label, shape), group in by_label_shape.items():
         for metric, title, y_label in metrics:
             series = defaultdict(list)
             for row in group:
@@ -289,9 +290,9 @@ def main():
                 name = row["variant"]
                 series[name].append((x, y))
             x_label = "Nodes" if label == "node_sweep" else "Processes"
-            out = Path(args.out_dir) / f"{label}_N{n}_{metric}.svg"
-            make_svg(series, f"{title} - {label} - N={n}", x_label, y_label, out)
-            make_png(series, f"{title} - {label} - N={n}", x_label, y_label, out.with_suffix(".png"))
+            out = Path(args.out_dir) / f"{label}_MKN{shape}_{metric}.svg"
+            make_svg(series, f"{title} - {label} - {shape}", x_label, y_label, out)
+            make_png(series, f"{title} - {label} - {shape}", x_label, y_label, out.with_suffix(".png"))
 
 
 if __name__ == "__main__":

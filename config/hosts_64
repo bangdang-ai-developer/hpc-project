@@ -1,0 +1,5 @@
+# Current replacement cluster exposes 44 WSL logical cores total, not 64.
+# Keep this file as a full-current-cluster alias for older commands that referenced hosts_64.
+node1 slots=12
+node2 slots=16
+node3 slots=16

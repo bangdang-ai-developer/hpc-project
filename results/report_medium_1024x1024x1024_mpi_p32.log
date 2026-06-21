@@ -1,0 +1,28 @@
+
+================ RUN CONFIG ================
+Variant                 : mpi
+Matrix shape            : A(1024x1024) x B(1024x1024) = C(1024x1024)
+Repeat count            : 1
+Seed                    : 2026
+Input value range       : integer double [0, 1000]
+MPI processes           : 32
+Nodes detected          : 3
+Threads per process     : 1 (pure MPI)
+Process/core setting    : PE=1, mapping=slots_8_12_12
+Tile size               : 32
+Estimated memory        : 0.0317 GB / 7.0000 GB limit
+Work per repeat         : 2147483648 FLOP (2.147 GFLOP)
+============================================
+
+
+------------- PERFORMANCE METRICS -----------
+Run index               : 1/1
+Execution time          : 6.263025687 seconds
+Throughput              : 0.342883 GFLOP/s
+Processes               : 32 MPI process(es), 3 node(s)
+Speedup/Efficiency      : computed later in summary.csv
+Checksum hash           : 7303585a77c34a74
+Sample file             : not saved
+---------------------------------------------
+RESULT,mpi,1024,1024,1024,32,3,32,0,6.263025687,268930244973588,268930244973588,289595645,7303585a77c34a74,report_medium,slots_8_12_12,1,1,,
+WALL_CLOCK_SECONDS,11.94

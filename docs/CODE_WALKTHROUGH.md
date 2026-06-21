@@ -12,28 +12,28 @@ src/matrix_hpc.h   khai bao dung chung
 
 ## 1. Muc tieu cua chuong trinh
 
-Chuong trinh thuc hien phep nhan ma tran vuong:
+Chuong trinh thuc hien phep nhan ma tran chu nhat:
 
 ```text
-C = A x B
+A(M x K) x B(K x N) = C(M x N)
 ```
 
 Voi kich thuoc:
 
 ```text
-A, B, C deu la N x N
+A co M x K phan tu, B co K x N phan tu, C co M x N phan tu
 ```
 
 Do phuc tap thuat toan co ban:
 
 ```text
-O(N^3)
+O(M x K x N)
 ```
 
 So phep tinh dau cham dong ly thuyet:
 
 ```text
-2 x N^3 FLOP
+2 x M x K x N FLOP
 ```
 
 ## 2. Cac bien the thuat toan
@@ -44,6 +44,7 @@ So phep tinh dau cham dong ly thuyet:
 | `seq_tiled` | Tuan tu co chia tile de cai thien cache |
 | `mpi` | MPI chia hang A, broadcast B, gather C |
 | `mpi_tiled` | MPI chia hang + tiled local multiply, khuyen nghi benchmark |
+| `mpi_2d` | MPI chia process theo luoi 2D, scatter block A/B theo y tuong matrix-v2 |
 
 ## 3. Luong chay tong quat
 
@@ -51,11 +52,12 @@ So phep tinh dau cham dong ly thuyet:
 main()
   MPI_Init
   parse CLI hoac interactive input
-  validate N/variant/repeat/tile/RAM
+  validate M/K/N/variant/repeat/tile/RAM
   detect node count
   in RUN CONFIG
   neu variant seq/seq_tiled -> run_seq()
   neu variant mpi/mpi_tiled -> run_mpi()
+  neu variant mpi_2d -> run_mpi_2d()
   MPI_Finalize
 ```
 
@@ -76,6 +78,8 @@ Demo interactive cho nguoi dung nhap:
 
 ```text
 variant
+M
+K
 N
 seed
 co luu full result khong
@@ -87,7 +91,7 @@ Cac loi duoc chan:
 
 ```text
 variant khong hop le
-N <= 0
+M/K/N <= 0
 repeat <= 0
 tile <= 0
 seq nhung chay nhieu process
@@ -101,7 +105,7 @@ Rank 0 sinh ma tran A va B bang seed co dinh.
 Ly do dung seed:
 
 ```text
-Cung N + cung seed -> cung input -> co the so sanh checksum giua cac variant
+Cung M/K/N + cung seed -> cung input -> co the so sanh checksum giua cac variant
 ```
 
 ## 6. Thuat toan tuan tu
@@ -109,7 +113,7 @@ Cung N + cung seed -> cung input -> co the so sanh checksum giua cac variant
 `seq` tinh moi phan tu C:
 
 ```text
-C[i][j] = sum(A[i][k] * B[k][j])
+C[i][j] = sum(A[i][t] * B[t][j]), voi t = 0..K-1
 ```
 
 `seq_tiled` van la cung cong thuc, nhung chia block/tile de cache tot hon.
@@ -121,15 +125,26 @@ Y tuong cua `mpi` va `mpi_tiled`:
 ```text
 Rank 0 giu A, B, C day du
 MPI_Scatterv chia cac hang cua A cho process
-MPI_Bcast gui B cho tat ca process
+MPI_Bcast gui B(KxN) cho tat ca process
 Moi process tinh cac hang C cua minh
 MPI_Gatherv gom C ve rank 0
+```
+
+Y tuong cua `mpi_2d`:
+
+```text
+MPI_Dims_create tao luoi row_parts x col_parts
+Rank 0 pack A theo block hang va B theo block cot
+B local duoc luu transpose de moi rank doc lien tuc theo k
+MPI_Scatter gui A_local va B_local cho tung rank
+Moi rank tinh mot block C_local
+MPI_Gather gom block C, rank 0 unpack ve ma tran C day du
 ```
 
 Vi chia theo hang, moi process nhan gan bang nhau:
 
 ```text
-rows = N / P, mot so process dau nhan them 1 hang neu N khong chia het cho P
+rows = M / P, mot so process dau nhan them 1 hang neu M khong chia het cho P
 ```
 
 ## 8. Tai sao dung flat array 1D
@@ -137,7 +152,7 @@ rows = N / P, mot so process dau nhan them 1 hang neu N khong chia het cho P
 Ma tran duoc luu bang mang 1 chieu:
 
 ```text
-A[i * N + j]
+A[i * K + j], B[i * N + j], C[i * N + j]
 ```
 
 Ly do:
@@ -165,7 +180,7 @@ Checksum
 Sample file
 ```
 
-Phan RUN CONFIG in them N, so process, so node, RAM uoc luong va FLOP ly thuyet.
+Phan RUN CONFIG in them M/K/N, so process, so node, RAM uoc luong va FLOP ly thuyet.
 
 Cong thuc:
 
@@ -243,7 +258,9 @@ Gia tri demo nhanh:
 ```text
 How many parallel CPU/processes? 2 hoac 4
 Choose algorithm: 4
-N: 128 hoac 256
+M: 128
+K: 128
+N: 128
 Seed: Enter
 Save full result: n
 ```
@@ -251,15 +268,21 @@ Save full result: n
 Neu muon demo workload lon hon va co thoi gian:
 
 ```text
-N: 1024
+M/K/N: 1024
 ```
 
-Khong nen demo truc tiep voi `N=8192` neu khong chac RAM/thoi gian.
+Khong nen demo truc tiep voi shape `8192x8192x8192` neu khong chac RAM/thoi gian.
 
-Neu thay hoi `N=4096` lon co nao, tra loi:
+Neu thay hoi `mpi_2d` khac gi `mpi_tiled`, tra loi:
 
 ```text
-N=4096 nghia la moi ma tran co 4096 x 4096 phan tu. So phep tinh ly thuyet la 2 x 4096^3, xap xi 137.4 ty FLOP.
+mpi_tiled chia A theo hang va broadcast toan bo B cho moi process. mpi_2d chia theo luoi 2 chieu: moi process chi nhan mot block hang cua A va mot block cot cua B da transpose, sau do tinh mot block C. Cach nay giam kich thuoc B local va gan voi y tuong trong matrix-v2.
+```
+
+Neu thay hoi `4096x4096x4096` lon co nao, tra loi:
+
+```text
+Shape 4096x4096x4096 nghia la A co 4096 x 4096 phan tu, B co 4096 x 4096 phan tu va C co 4096 x 4096 phan tu. So phep tinh ly thuyet la 2 x 4096 x 4096 x 4096, xap xi 137.4 ty FLOP.
 ```
 
 Neu thay hoi vi sao dung checksum thay vi in ca ma tran, tra loi:

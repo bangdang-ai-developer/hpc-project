@@ -1,0 +1,2 @@
+variant,m,k,n,processes,nodes,tile,run_label,mapping,pe,runs,time_avg_sec,time_min_sec,time_std_sec,baseline_time_sec,speedup,efficiency,amdahl_serial_fraction,amdahl_parallel_fraction,amdahl_speedup,amdahl_max_speedup,checksum_hashes
+mpi_2d,10000,10000,10000,16,3,10000,report_large_10000_opt,slots_4_6_6_panel_10000,1,1,194.533927698,194.533927698,0.000000000,,,,,,,,1

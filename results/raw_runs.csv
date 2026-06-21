@@ -1,0 +1,13 @@
+variant,m,k,n,processes,nodes,tile,repeat_index,seconds,checksum_sum,checksum_abs,checksum_max_abs,checksum_hash,run_label,mapping,pe,threads_per_process,sample_file,full_file
+seq,64,48,32,1,1,32,0,0.000128534,24967791651,24967791651,18167515,a5b85b557e4f182d,process_sweep,bind_to_core,1,1,outputs/C_sample_seq_M64_K48_N32_P1_R0.csv,
+seq_tiled,64,48,32,1,1,32,0,0.000100208,24967791651,24967791651,18167515,a5b85b557e4f182d,process_sweep,bind_to_core,1,1,outputs/C_sample_seq_tiled_M64_K48_N32_P1_R0.csv,
+mpi,64,48,32,1,1,32,0,0.000166863,24967791651,24967791651,18167515,a5b85b557e4f182d,process_sweep,bind_to_core,1,1,outputs/C_sample_mpi_M64_K48_N32_P1_R0.csv,
+mpi,64,48,32,2,1,32,0,0.000247782,24967791651,24967791651,18167515,a5b85b557e4f182d,process_sweep,bind_to_core,1,1,outputs/C_sample_mpi_M64_K48_N32_P2_R0.csv,
+mpi,64,48,32,4,1,32,0,0.000159197,24967791651,24967791651,18167515,a5b85b557e4f182d,process_sweep,bind_to_core,1,1,outputs/C_sample_mpi_M64_K48_N32_P4_R0.csv,
+mpi_tiled,64,48,32,1,1,32,0,0.000136678,24967791651,24967791651,18167515,a5b85b557e4f182d,process_sweep,bind_to_core,1,1,outputs/C_sample_mpi_tiled_M64_K48_N32_P1_R0.csv,
+mpi_tiled,64,48,32,2,1,32,0,0.000122975,24967791651,24967791651,18167515,a5b85b557e4f182d,process_sweep,bind_to_core,1,1,outputs/C_sample_mpi_tiled_M64_K48_N32_P2_R0.csv,
+mpi_tiled,64,48,32,4,1,32,0,0.000307888,24967791651,24967791651,18167515,a5b85b557e4f182d,process_sweep,bind_to_core,1,1,outputs/C_sample_mpi_tiled_M64_K48_N32_P4_R0.csv,
+mpi_2d,64,48,32,1,1,32,0,0.000166455,24967791651,24967791651,18167515,a5b85b557e4f182d,process_sweep,bind_to_core,1,1,outputs/C_sample_mpi_2d_M64_K48_N32_P1_R0.csv,
+mpi_2d,64,48,32,2,1,32,0,0.000313020,24967791651,24967791651,18167515,a5b85b557e4f182d,process_sweep,bind_to_core,1,1,outputs/C_sample_mpi_2d_M64_K48_N32_P2_R0.csv,
+mpi_2d,64,48,32,4,1,32,0,0.000405086,24967791651,24967791651,18167515,a5b85b557e4f182d,process_sweep,bind_to_core,1,1,outputs/C_sample_mpi_2d_M64_K48_N32_P4_R0.csv,
+mpi_2d,64,48,32,2,2,32,0,0.010775148,24967791651,24967791651,18167515,a5b85b557e4f182d,node_sweep,ppr:1:node:PE=1,1,1,outputs/C_sample_mpi_2d_M64_K48_N32_P2_R0.csv,
