@@ -1,12 +1,12 @@
 # Code walkthrough
 
-Tai lieu nay dung de giai thich nhanh code C khi demo/bao ve.
+Tai lieu nay dung de giai thich nhanh code C++ khi demo/bao ve.
 
 File can xem:
 
 ```text
-src/matrix_hpc.c   thuat toan chinh
-src/benchmark.c    CLI, do thoi gian, checksum, ghi evidence
+src/matrix_hpc.cpp thuat toan chinh
+src/benchmark.cpp  CLI, do thoi gian, checksum, ghi evidence
 src/matrix_hpc.h   khai bao dung chung
 ```
 
@@ -133,12 +133,12 @@ MPI_Gatherv gom C ve rank 0
 Y tuong cua `mpi_2d`:
 
 ```text
-MPI_Dims_create tao luoi row_parts x col_parts
+Chon layout 2D tu cac uoc so cua P theo ti le M/N
 Rank 0 pack A theo block hang va B theo block cot
 B local duoc luu transpose de moi rank doc lien tuc theo k
-MPI_Scatter gui A_local va B_local cho tung rank
+Rank 0 gui A_local va B_local cho tung rank
 Moi rank tinh mot block C_local
-MPI_Gather gom block C, rank 0 unpack ve ma tran C day du
+MPI_Gather gom block C, rank 0 unpack ve ma tran C day du khi can sample/full result
 ```
 
 Vi chia theo hang, moi process nhan gan bang nhau:

@@ -128,7 +128,7 @@ def build_doc():
     info.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
     heading(doc, "1. Giới thiệu và cơ sở lý thuyết")
-    para(doc, "Đề tài xây dựng chương trình nhân ma trận lớn bằng C và Open MPI, gồm bản tuần tự và các bản song song để đánh giá hiệu năng khi thay đổi số process và số node.")
+    para(doc, "Đề tài xây dựng chương trình nhân ma trận lớn bằng C++ và Open MPI, gồm bản tuần tự và các bản song song để đánh giá hiệu năng khi thay đổi số process và số node.")
     para(doc, "Bài toán tổng quát là A(M x K) * B(K x N) = C(M x N). Mỗi phần tử C[i,j] được tính bằng tổng A[i,t] * B[t,j] với t chạy từ 0 đến K-1. Độ phức tạp tuần tự là O(MKN), tương ứng xấp xỉ 2*M*K*N FLOP.")
     para(doc, "Benchmark chính dùng shape 10000x10000x10000, tương ứng khoảng 2 x 10^12 FLOP. Dữ liệu A/B là số nguyên ngẫu nhiên trong [0,1000] nhưng lưu bằng double để giữ cấu trúc thuật toán và checksum.")
 

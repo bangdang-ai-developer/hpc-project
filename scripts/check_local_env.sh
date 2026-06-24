@@ -34,7 +34,7 @@ free -h || true
 echo
 
 missing=0
-for cmd in gcc make mpicc mpirun python3 rsync ssh; do
+for cmd in g++ make mpic++ mpirun python3 rsync ssh; do
   need "$cmd" || missing=1
 done
 need_python_module docx || missing=1
@@ -57,8 +57,8 @@ fi
 
 echo
 echo "== Versions =="
-gcc --version | head -n 1
-mpicc --version | head -n 1
+g++ --version | head -n 1
+mpic++ --version | head -n 1
 mpirun --version 2>/dev/null | head -n 1 || true
 python3 --version
 

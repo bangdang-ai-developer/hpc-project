@@ -15,7 +15,7 @@ CHECK_REMOTE="${CHECK_REMOTE:-0}"
 REMOTE_DIR="${REMOTE_DIR:-$(pwd)}"
 
 mkdir -p "$(dirname "$OUT")"
-echo "role,host,hostname,os,cpu_count,mem_total,gcc,mpirun,project_dir" > "$OUT"
+echo "role,host,hostname,os,cpu_count,mem_total,compiler,mpirun,project_dir" > "$OUT"
 
 target_for_ssh() {
   local host="$1"
@@ -41,12 +41,12 @@ capture_one() {
     prefix=(ssh -o BatchMode=yes -o ConnectTimeout=5 "$(target_for_ssh "$host")")
   fi
 
-  local hostname os cpu mem gcc mpirun
+  local hostname os cpu mem compiler mpirun
   hostname="$("${prefix[@]}" hostname 2>/dev/null || echo unknown)"
   os="$("${prefix[@]}" sh -lc '. /etc/os-release 2>/dev/null && echo "$PRETTY_NAME" || uname -a' 2>/dev/null || echo unknown)"
   cpu="$("${prefix[@]}" nproc 2>/dev/null || echo unknown)"
   mem="$("${prefix[@]}" sh -lc "free -h 2>/dev/null | awk '/^Mem:/ {print \$2}'" 2>/dev/null || echo unknown)"
-  gcc="$("${prefix[@]}" sh -lc 'gcc --version 2>/dev/null | head -n 1' 2>/dev/null || echo unknown)"
+  compiler="$("${prefix[@]}" sh -lc 'mpic++ --version 2>/dev/null | head -n 1 || g++ --version 2>/dev/null | head -n 1' 2>/dev/null || echo unknown)"
   mpirun="$("${prefix[@]}" sh -lc 'mpirun --version 2>/dev/null | head -n 1' 2>/dev/null || echo unknown)"
 
   {
@@ -56,7 +56,7 @@ capture_one() {
     quote_csv "$os"; printf ","
     quote_csv "$cpu"; printf ","
     quote_csv "$mem"; printf ","
-    quote_csv "$gcc"; printf ","
+    quote_csv "$compiler"; printf ","
     quote_csv "$mpirun"; printf ","
     quote_csv "$REMOTE_DIR"; printf "\n"
   } >> "$OUT"

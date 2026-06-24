@@ -1,6 +1,6 @@
 # Huong dan clone repo va cai moi truong tu dau
 
-Tai lieu nay danh cho 2 thanh vien con lai trong nhom. Muc tieu la cai du moi truong, clone project, build duoc code C + MPI va chay demo nho thanh cong.
+Tai lieu nay danh cho 2 thanh vien con lai trong nhom. Muc tieu la cai du moi truong, clone project, build duoc code C++ + MPI va chay demo nho thanh cong.
 
 Repo GitHub:
 

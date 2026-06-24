@@ -44,7 +44,7 @@
 \newcommand{\code}[1]{\texttt{#1}}
 \newcommand{\shape}{\code{10000x10000x10000}\xspace}
 
-\title{\textbf{Báo cáo thực nghiệm song song hóa phép nhân ma trận lớn bằng C và Open MPI}}
+\title{\textbf{Báo cáo thực nghiệm song song hóa phép nhân ma trận lớn bằng C++ và Open MPI}}
 \author{Nhóm thực hiện: [Điền tên nhóm]}
 \date{Tháng 6 năm 2026}
 
@@ -53,7 +53,7 @@
 \thispagestyle{empty}
 
 \begin{abstract}
-Báo cáo trình bày quá trình xây dựng và thực nghiệm chương trình nhân ma trận kích thước lớn bằng ngôn ngữ C và Open MPI trên cụm 3 máy Windows Subsystem for Linux (WSL). Từ yêu cầu ban đầu là nhân ma trận vuông, chương trình đã được mở rộng thành phép nhân ma trận chữ nhật tổng quát $A(M \times K) \times B(K \times N) = C(M \times N)$, dữ liệu đầu vào là số nguyên ngẫu nhiên trong đoạn $[0,1000]$ nhưng lưu bằng kiểu \code{double}. Trọng tâm thực nghiệm là biến thể \code{mpi\_2d}, lấy ý tưởng từ cách chia lưới 2 chiều: mỗi tiến trình nhận một block hàng của $A$, một block cột của $B$ đã transpose, sau đó tính block cục bộ của $C$.
+Báo cáo trình bày quá trình xây dựng và thực nghiệm chương trình nhân ma trận kích thước lớn bằng ngôn ngữ C++ và Open MPI trên cụm 3 máy Windows Subsystem for Linux (WSL). Từ yêu cầu ban đầu là nhân ma trận vuông, chương trình đã được mở rộng thành phép nhân ma trận chữ nhật tổng quát $A(M \times K) \times B(K \times N) = C(M \times N)$, dữ liệu đầu vào là số nguyên ngẫu nhiên trong đoạn $[0,1000]$ nhưng lưu bằng kiểu \code{double}. Trọng tâm thực nghiệm là biến thể \code{mpi\_2d}, lấy ý tưởng từ cách chia lưới 2 chiều: mỗi tiến trình nhận một block hàng của $A$, một block cột của $B$ đã transpose, sau đó tính block cục bộ của $C$.
 
 Với bài toán chính \shape, tổng số phép toán xấp xỉ $2 \times 10^{12}$ FLOP. Thực nghiệm quét số tiến trình trên 3 node cho thấy cấu hình 9 tiến trình cho thời gian tốt nhất 144.972 giây, đạt 13.796 GFLOP/s. Cấu hình 12 tiến trình đứng thứ hai với 148.039 giây, chỉ chậm hơn khoảng 2.12\%. Các cấu hình dùng nhiều tiến trình hơn như 16, 25, 36 và 44 lại chậm hơn do chi phí pack/send tập trung tại rank 0 và số thông điệp MPI tăng nhanh. Kết quả checksum của tất cả cấu hình đều trùng nhau, chứng minh khác biệt thời gian đến từ hiệu năng chứ không phải sai lệch kết quả tính toán.
 \end{abstract}
@@ -343,7 +343,7 @@ Tính đúng & Tất cả cấu hình benchmark chính có cùng checksum hash \
 \end{table}
 
 \section{Kết luận}
-Đề tài đã xây dựng được chương trình nhân ma trận lớn bằng C và Open MPI, hỗ trợ phép nhân tổng quát $A(M \times K) \times B(K \times N)$ với các biến thể tuần tự, tiled, MPI chia hàng và \code{mpi\_2d}. Tất cả cấu hình benchmark chính đều cho cùng checksum hash \code{c14405814301863a}, xác nhận tính đúng và tính tái lập của kết quả.
+Đề tài đã xây dựng được chương trình nhân ma trận lớn bằng C++ và Open MPI, hỗ trợ phép nhân tổng quát $A(M \times K) \times B(K \times N)$ với các biến thể tuần tự, tiled, MPI chia hàng và \code{mpi\_2d}. Tất cả cấu hình benchmark chính đều cho cùng checksum hash \code{c14405814301863a}, xác nhận tính đúng và tính tái lập của kết quả.
 
 Trên benchmark chính với $2 \times 10^{12}$ FLOP, p9 có best/min runtime tốt nhất trong các cấu hình đã đo: 144.972 giây và 13.796 GFLOP/s. p12 rất gần p9 với 148.039 giây, chỉ chậm hơn 2.12\%, nhưng p12 mới chạy 1 lần nên cần lặp thêm trong điều kiện mạng tương tự để kết luận ổn định hơn. p16, p25, p36 và p44 chậm hơn do bottleneck pack/send tập trung tại rank 0. Vì vậy, muốn p44 hoặc cấu hình nhiều tiến trình hơn thật sự tốt hơn, cần chuyển sang cơ chế phân phối dữ liệu phi tập trung hơn, ví dụ SUMMA hoặc broadcast panel theo communicator 2D.
 

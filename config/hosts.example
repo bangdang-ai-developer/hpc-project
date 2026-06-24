@@ -1,5 +1,5 @@
 # Copy this file to config/hosts, then replace IPs/hostnames with the 3 real Linux machines.
-# Format for OpenMPI:
+# Format for Open MPI:
 #   hostname_or_ip slots=<number_of_process_slots>
 #
 # Example:
@@ -11,7 +11,7 @@
 # - Machine 1 is your main node.
 # - Machines 2 and 3 are your friends' worker nodes.
 # - All machines should use the same Linux username or SSH config.
-# - Each machine must have OpenMPI, GCC, Python 3, python3-docx, rsync, and SSH server installed.
+# - Each machine must have Open MPI, g++, Python 3, python3-docx, rsync, and SSH server installed.
 
 192.168.1.10 slots=4
 192.168.1.11 slots=4

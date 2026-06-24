@@ -66,7 +66,7 @@ target_for_ssh() {
   fi
 }
 
-check_command="cd $REMOTE_DIR && hostname; command -v mpicc; command -v mpirun; command -v python3; python3 -c 'import docx'; command -v rsync; test -x ./build/matrix_hpc && echo ./build/matrix_hpc; nproc; free -h | head -n 2"
+check_command="cd $REMOTE_DIR && hostname; command -v mpic++; command -v mpirun; command -v python3; python3 -c 'import docx'; command -v rsync; test -x ./build/matrix_hpc && echo ./build/matrix_hpc; nproc; free -h | head -n 2"
 
 mapfile -t HOSTS < <(hosts)
 if [[ "${#HOSTS[@]}" -lt 1 ]]; then
@@ -93,7 +93,7 @@ tmp_hosts="$(mktemp)"
 grep -v '^[[:space:]]*$' "$HOSTFILE" | grep -v '^[[:space:]]*#' | sed 's/#.*//' > "$tmp_hosts"
 
 echo
-echo "== OpenMPI cluster smoke test =="
+echo "== Open MPI cluster smoke test =="
 np=$((${#HOSTS[@]} * PPN))
 mpirun "${MPI_ROOT_FLAGS[@]}" "${MPI_AGENT_FLAGS[@]}" "${MPI_SSH_FLAGS[@]}" "${MPI_TCP_FLAGS[@]}" -x HWLOC_COMPONENTS --hostfile "$tmp_hosts" -np "$np" --wdir "$REMOTE_DIR" --map-by "ppr:${PPN}:node" hostname | sort
 

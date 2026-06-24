@@ -1,15 +1,15 @@
-# Do an HPC: Nhan ma tran lon bang C + MPI
+# Do an HPC: Nhan ma tran lon bang C++ + MPI
 
-Project thuc hien de tai 1: song song hoa phep nhan ma tran kich thuoc lon bang C + MPI/OpenMPI.
+Project thuc hien de tai 1: song song hoa phep nhan ma tran kich thuoc lon bang C++ + MPI/Open MPI.
 
 Muc tieu cua project la giu code va tai lieu gon: de build, de demo, de benchmark, va de nop bai.
-Code C co chu dich viet theo style bai thuc hanh MPI: tach file thuat toan va file benchmark, it abstraction, de chi ra `Scatterv`, `Bcast`, `Gatherv` khi bao ve.
+Code C++ co chu dich viet theo style bai thuc hanh MPI: tach file thuat toan va file benchmark, it abstraction, de chi ra `Scatterv`, `Bcast`, `Gatherv` khi bao ve.
 
 ## Cau truc chinh
 
 ```text
-src/matrix_hpc.c        Thuat toan chinh
-src/benchmark.c         CLI, demo, benchmark, evidence
+src/matrix_hpc.cpp      Thuat toan chinh
+src/benchmark.cpp       CLI, demo, benchmark, evidence
 src/matrix_hpc.h        Khai bao dung chung
 Makefile                Build va cac lenh tien ich
 scripts/                Script demo, benchmark, report, package

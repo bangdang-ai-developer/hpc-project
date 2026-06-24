@@ -1,9 +1,9 @@
-MPICC ?= mpicc
-CFLAGS ?= -O3 -std=c11 -Wall -Wextra -pedantic -march=native
+MPICXX ?= mpic++
+CXXFLAGS ?= -O3 -std=c++17 -Wall -Wextra -pedantic -march=native
 LDFLAGS ?= -lm
 
 TARGET := build/matrix_hpc
-SRC := src/benchmark.c src/matrix_hpc.c
+SRC := src/benchmark.cpp src/matrix_hpc.cpp
 
 .PHONY: all clean dirs check demo pipeline multinode-pipeline charts report group-info preflight package
 
@@ -13,7 +13,7 @@ dirs:
 	mkdir -p build results outputs data docs/charts
 
 $(TARGET): $(SRC)
-	$(MPICC) $(CFLAGS) -o $@ $(SRC) $(LDFLAGS)
+	$(MPICXX) $(CXXFLAGS) -o $@ $(SRC) $(LDFLAGS)
 
 clean:
 	rm -f $(TARGET)

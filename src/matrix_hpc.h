@@ -3,9 +3,9 @@
 
 #include <mpi.h>
 
-/* File header dung chung cho 2 file C:
-   - matrix_hpc.c: chi chua thuat toan va cac ham MPI cot loi.
-   - benchmark.c : chua CLI, demo, do thoi gian va ghi evidence.
+/* File header dung chung cho 2 file C++:
+   - matrix_hpc.cpp: chi chua thuat toan va cac ham MPI cot loi.
+   - benchmark.cpp : chua CLI, demo, do thoi gian va ghi evidence.
    Tach header giup code de doc hon va tranh lap lai khai bao. */
 
 #define HPC_STR 64
@@ -17,7 +17,7 @@
    - m/k/n: kich thuoc A(MxK), B(KxN), C(MxN).
    - repeat/tile/seed: thong so benchmark.
    - save_sample/save_full/checksum_file: evidence.
-   - mapping/pe: thong tin cach map process/core cua OpenMPI. */
+   - mapping/pe: thong tin cach map process/core cua Open MPI. */
 typedef struct {
     char variant[HPC_STR], out_dir[HPC_PATH], checksum_file[HPC_PATH];
     char run_label[HPC_STR], mapping[HPC_STR];
@@ -52,7 +52,7 @@ void hpc_multiply_tiled(const double *A, const double *B, double *C, int rows, i
 void hpc_multiply_variant(const Options *opt, const double *A, const double *B, double *C, int rows);
 
 /* Chia hang va chay mot lan tinh toan.
-   benchmark.c lap lai cac ham nay nhieu lan de do repeat/min/avg/stddev. */
+   benchmark.cpp lap lai cac ham nay nhieu lan de do repeat/min/avg/stddev. */
 void hpc_make_counts(int rows, int width, int processes, int *counts, int *displs);
 void hpc_make_2d_layout(int m, int n, int processes, Hpc2DLayout *layout);
 int hpc_2d_panel_k(const Options *opt);

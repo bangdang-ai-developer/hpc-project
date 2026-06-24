@@ -7,7 +7,7 @@ Checklist nay dung truoc khi nop bai.
 | Hang muc | File/thu muc |
 |---|---|
 | Bao cao Word | `docs/BaoCao_DeTai1_NhanMaTran_MPI.docx` |
-| Source code | `src/matrix_hpc.c`, `src/benchmark.c`, `src/matrix_hpc.h` |
+| Source code | `src/matrix_hpc.cpp`, `src/benchmark.cpp`, `src/matrix_hpc.h` |
 | Build | `Makefile` |
 | Huong dan | `README.md`, `START_HERE.md`, `docs/INSTALL_FOR_TEAMMATES.md` |
 | Thong tin nhom | `config/group_info.txt` |

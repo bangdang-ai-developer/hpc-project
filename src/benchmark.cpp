@@ -15,7 +15,7 @@
    - doc tham so CLI hoac hoi nguoi dung khi demo
    - validate M/K/N, process, RAM
    - cap phat A/B/C tren rank 0
-   - goi cac ham thuat toan trong matrix_hpc.c
+   - goi cac ham thuat toan trong matrix_hpc.cpp
    - do thoi gian, tinh checksum, ghi CSV/sample evidence */
 
 /* Checksum dung de chung minh ket qua giua cac bien the la giong nhau.
@@ -209,14 +209,19 @@ static void *xmalloc(size_t bytes) {
     return p;
 }
 
+template <typename T>
+static T *xmalloc_items(size_t count) {
+    return static_cast<T *>(xmalloc(count * sizeof(T)));
+}
+
 /* Chi rank 0 giu A, B, C day du.
    Worker rank chi nhan B va cac hang A local trong run_mpi. */
 static void allocate_root_matrices(const Options *opt, int rank, double **A, double **B, double **C) {
     *A = *B = *C = NULL;
     if (rank) return;
-    *A = xmalloc((size_t)opt->m * opt->k * sizeof(double));
-    *B = xmalloc((size_t)opt->k * opt->n * sizeof(double));
-    *C = xmalloc((size_t)opt->m * opt->n * sizeof(double));
+    *A = xmalloc_items<double>((size_t)opt->m * opt->k);
+    *B = xmalloc_items<double>((size_t)opt->k * opt->n);
+    *C = xmalloc_items<double>((size_t)opt->m * opt->n);
     hpc_fill_matrix(*A, opt->m, opt->k, opt->seed, 1);
     hpc_fill_matrix(*B, opt->k, opt->n, opt->seed, 2);
 }
@@ -227,7 +232,7 @@ static int count_nodes(int rank, int processes) {
     char host[MPI_MAX_PROCESSOR_NAME], *hosts = NULL;
     int len, nodes = 0;
     MPI_Get_processor_name(host, &len);
-    if (!rank) hosts = calloc((size_t)processes, MPI_MAX_PROCESSOR_NAME);
+    if (!rank) hosts = static_cast<char *>(calloc((size_t)processes, MPI_MAX_PROCESSOR_NAME));
     MPI_Gather(host, MPI_MAX_PROCESSOR_NAME, MPI_CHAR, hosts, MPI_MAX_PROCESSOR_NAME, MPI_CHAR, 0, MPI_COMM_WORLD);
     if (!rank) {
         for (int i = 0; i < processes; i++) {
@@ -451,23 +456,23 @@ static void run_seq(const Options *opt, int rank, int processes, int nodes) {
 }
 
 /* Chay bien the MPI.
-   benchmark.c lo cap phat buffer va lap repeat.
-   matrix_hpc.c lo mot lan Scatterv/Bcast/local multiply/Gatherv. */
+   benchmark.cpp lo cap phat buffer va lap repeat.
+   matrix_hpc.cpp lo mot lan Scatterv/Bcast/local multiply/Gatherv. */
 static void run_mpi(const Options *opt, int rank, int processes, int nodes) {
-    int *countsA = xmalloc((size_t)processes * sizeof(int));
-    int *displsA = xmalloc((size_t)processes * sizeof(int));
-    int *countsC = xmalloc((size_t)processes * sizeof(int));
-    int *displsC = xmalloc((size_t)processes * sizeof(int));
+    int *countsA = xmalloc_items<int>((size_t)processes);
+    int *displsA = xmalloc_items<int>((size_t)processes);
+    int *countsC = xmalloc_items<int>((size_t)processes);
+    int *displsC = xmalloc_items<int>((size_t)processes);
     hpc_make_counts(opt->m, opt->k, processes, countsA, displsA);
     hpc_make_counts(opt->m, opt->n, processes, countsC, displsC);
 
     double *A, *B, *C;
     allocate_root_matrices(opt, rank, &A, &B, &C);
-    if (rank) B = xmalloc((size_t)opt->k * opt->n * sizeof(double));
+    if (rank) B = xmalloc_items<double>((size_t)opt->k * opt->n);
 
-    double *localA = xmalloc((size_t)countsA[rank] * sizeof(double));
-    double *localC = xmalloc((size_t)countsC[rank] * sizeof(double));
-    double *baselineC = (!rank && opt->measure_speedup) ? xmalloc((size_t)opt->m * opt->n * sizeof(double)) : NULL;
+    double *localA = xmalloc_items<double>((size_t)countsA[rank]);
+    double *localC = xmalloc_items<double>((size_t)countsC[rank]);
+    double *baselineC = (!rank && opt->measure_speedup) ? xmalloc_items<double>((size_t)opt->m * opt->n) : NULL;
 
     for (int r = 0; r < opt->repeat; r++) {
         double base_sec = 0.0, sec = 0.0;
@@ -508,20 +513,20 @@ static void run_mpi_2d(const Options *opt, int rank, int processes, int nodes) {
 
     double *A = NULL, *B = NULL, *C = NULL;
     if (!rank) {
-        A = xmalloc((size_t)opt->m * opt->k * sizeof(double));
-        B = xmalloc((size_t)opt->k * opt->n * sizeof(double));
-        if (gather_result) C = xmalloc((size_t)opt->m * opt->n * sizeof(double));
+        A = xmalloc_items<double>((size_t)opt->m * opt->k);
+        B = xmalloc_items<double>((size_t)opt->k * opt->n);
+        if (gather_result) C = xmalloc_items<double>((size_t)opt->m * opt->n);
         hpc_fill_matrix(A, opt->m, opt->k, opt->seed, 1);
         hpc_fill_matrix(B, opt->k, opt->n, opt->seed, 2);
     }
 
-    double *A_scatter = !rank ? xmalloc(a_count * sizeof(double)) : NULL;
-    double *B_scatter = !rank ? xmalloc(b_count * sizeof(double)) : NULL;
-    double *C_gather = (!rank && gather_result) ? xmalloc((size_t)processes * c_count * sizeof(double)) : NULL;
-    double *A_local = xmalloc(a_count * sizeof(double));
-    double *B_local = xmalloc(b_count * sizeof(double));
-    double *C_local = xmalloc(c_count * sizeof(double));
-    double *baselineC = (!rank && opt->measure_speedup) ? xmalloc((size_t)opt->m * opt->n * sizeof(double)) : NULL;
+    double *A_scatter = !rank ? xmalloc_items<double>(a_count) : NULL;
+    double *B_scatter = !rank ? xmalloc_items<double>(b_count) : NULL;
+    double *C_gather = (!rank && gather_result) ? xmalloc_items<double>((size_t)processes * c_count) : NULL;
+    double *A_local = xmalloc_items<double>(a_count);
+    double *B_local = xmalloc_items<double>(b_count);
+    double *C_local = xmalloc_items<double>(c_count);
+    double *baselineC = (!rank && opt->measure_speedup) ? xmalloc_items<double>((size_t)opt->m * opt->n) : NULL;
 
     if (!rank) printf("[HPC 2D] %dx%d\n", layout.row_parts, layout.col_parts);
 

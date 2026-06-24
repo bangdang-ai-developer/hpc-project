@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # One-command pipeline for the final 3-physical-machine benchmark.
-# Run only after config/hosts contains the real machines and SSH/OpenMPI works.
+# Run only after config/hosts contains the real machines and SSH/Open MPI works.
 #
 # Example:
 #   SSH_USER=your_user HOSTFILE=config/hosts SHAPES="2048x2048x2048 4096x4096x4096" NODES_LIST="1 2 3" PPN=4 REPEAT=5 bash scripts/run_multinode_pipeline.sh

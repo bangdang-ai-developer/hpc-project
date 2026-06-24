@@ -32,8 +32,8 @@ copy_if_exists() {
 copy_if_exists README.md README.md
 copy_if_exists START_HERE.md START_HERE.md
 copy_if_exists Makefile Makefile
-copy_if_exists src/matrix_hpc.c src/matrix_hpc.c
-copy_if_exists src/benchmark.c src/benchmark.c
+copy_if_exists src/matrix_hpc.cpp src/matrix_hpc.cpp
+copy_if_exists src/benchmark.cpp src/benchmark.cpp
 copy_if_exists src/matrix_hpc.h src/matrix_hpc.h
 
 # Minimal config

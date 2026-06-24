@@ -58,7 +58,7 @@ for i in "${!HOSTS[@]}"; do
   if [[ "$COPY_BUILD" == "1" ]]; then
     if [[ ! -x build/matrix_hpc ]]; then
       echo "COPY_BUILD=1 requested, but build/matrix_hpc is missing or not executable."
-      echo "Run make first, preferably with portable CFLAGS when copying across different CPUs."
+      echo "Run make first, preferably with portable CXXFLAGS when copying across different CPUs."
       exit 2
     fi
     echo "Copying local build/matrix_hpc to $target:$REMOTE_DIR/build/matrix_hpc"

@@ -53,8 +53,8 @@ echo "== Required source/report files =="
 need_file START_HERE.md
 need_file README.md
 need_file Makefile
-need_file src/matrix_hpc.c
-need_file src/benchmark.c
+need_file src/matrix_hpc.cpp
+need_file src/benchmark.cpp
 need_file src/matrix_hpc.h
 need_file docs/BaoCao_DeTai1_NhanMaTran_MPI.docx
 need_file config/group_info.txt
